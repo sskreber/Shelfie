@@ -40,23 +40,5 @@ public final class BookContract {
         public static final int AVAILABILITY_NOT_AVAILABLE = 0;
         public static final int AVAILABILITY_IN_STORAGE = 1;
         public static final int AVAILABILITY_IN_STORE = 2;
-
-        public static final String CATEGORY_UNSPECIFIED = "unspecified";
-        public static final String CATEGORY_ARTS = "arts";
-        public static final String CATEGORY_BIOGRAPHY = "biography";
-        public static final String CATEGORY_COMICS = "comics";
-        public static final String CATEGORY_CRIME = "crime";
-        public static final String CATEGORY_DRAMA = "drama";
-        public static final String CATEGORY_EROTICA = "erotica";
-        public static final String CATEGORY_HISTORY = "history";
-        public static final String CATEGORY_HORROR = "horror";
-        public static final String CATEGORY_HUMOUR = "humour";
-        public static final String CATEGORY_LINGUISTICS = "linguistics";
-        public static final String CATEGORY_MYSTERY = "mystery";
-        public static final String CATEGORY_POETRY = "poetry";
-        public static final String CATEGORY_SCIENCE = "science";
-        public static final String CATEGORY_SCI_FI = "sci-fi";
-        public static final String CATEGORY_THRILLER = "thriller";
-        public static final String CATEGORY_YOUNG_ADULT = "young adult";
     }
 }

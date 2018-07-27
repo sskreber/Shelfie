@@ -9,7 +9,7 @@ import com.example.android.shelfie.data.BookContract.BookEntry;
 
 public class BookDbHelper extends SQLiteOpenHelper {
 
-    protected static final String DATABASE_NAME = "shelfie2.db";
+    protected static final String DATABASE_NAME = "shelfie.db";
     protected static final int DATABASE_VERSION = 1;
 
     protected static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + BookEntry.TABLE_NAME + ";";
@@ -35,7 +35,6 @@ public class BookDbHelper extends SQLiteOpenHelper {
                 + BookEntry.COLUMN_BOOK_PRICE + " INTEGER, "
 
                 + BookEntry.COLUMN_BOOK_STATE + " INTEGER, "
-//                + BookEntry.COLUMN_BOOK_CATEGORY + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_AVAILABILITY + " INTEGER NOT NULL DEFAULT 0); ";
 
         db.execSQL(SQL_CREATE_BOOKS_TABLE);
