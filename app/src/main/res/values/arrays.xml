@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string-array name="array_product_name_options">
+        <item>@string/product_name_kindle_book</item>
+        <item>@string/product_name_pocket_book</item>
+        <item>@string/product_name_standard_book</item>
+        <item>@string/product_name_album</item>
+    </string-array>
+
+    <string-array name="array_state_options">
+        <item>@string/state_unknown</item>
+        <item>@string/state_used</item>
+        <item>@string/state_new</item>
+    </string-array>
+
+    <string-array name="array_availability_options">
+        <item>@string/availability_not_available</item>
+        <item>@string/availability_in_storage</item>
+        <item>@string/availability_in_store</item>
+    </string-array>
+
+</resources>
