@@ -1,29 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/small_margin">
+    android:padding="@dimen/small_margin"
+    tools:context=".ShelfActivity">
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Empty view for the list -->
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_centerInParent="true">
 
-        <TextView
-            android:id="@+id/text_view_book"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/medium_margin" />
-
-        <!--Plus icon created by Smashicons at www.flaticon.com -->
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+        <ImageView
+            android:id="@+id/ic_empty_bookshelf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="@dimen/medium_margin"
-            android:foregroundGravity="bottom"
-            android:src="@drawable/ic_plus" />
-    </LinearLayout>
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_empty_bookshelf"/>
 
-</ScrollView>
+        <!--Bookshelf icon created by Pixel Buddha at www.flaticon.com -->
+        <TextView
+            android:id="@+id/empty_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ic_empty_bookshelf"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-medium"
+            android:paddingTop="@dimen/medium_margin"
+            android:text="@string/empty_view_title_text"
+            android:textAppearance="?android:textAppearanceMedium"/>
+
+        <TextView
+            android:id="@+id/empty_subtitle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/empty_title_text"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif"
+            android:paddingTop="@dimen/close_to_medium_margin"
+            android:text="@string/empty_view_subtitle_text"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/colorLightPurple"/>
+    </RelativeLayout>
+
+
+    <!--Plus icon created by Smashicons at www.flaticon.com -->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/medium_margin"
+        android:src="@drawable/ic_plus" />
+
+</RelativeLayout>

@@ -1,10 +1,17 @@
 package com.example.android.shelfie;
 
 import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -19,7 +26,10 @@ import android.widget.Toast;
 import com.example.android.shelfie.data.BookContract.BookEntry;
 import com.example.android.shelfie.data.BookDbHelper;
 
-public class EditingActivity extends AppCompatActivity {
+
+public class EditingActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int EXISTING_BOOK_LOADER = 0;
 
     private EditText mSupplierNameEditText;
     private EditText mSupplierPhoneNumberEditText;
@@ -36,17 +46,30 @@ public class EditingActivity extends AppCompatActivity {
     private Spinner mAvailabilitySpinner;
     private int mAvailability = 0;
 
+    Uri mCurrentBookUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editing);
 
+        Intent intent = getIntent();
+        mCurrentBookUri = intent.getData();
+
+        if (mCurrentBookUri == null) {
+            setTitle(getResources().getString(R.string.editing_activity_add_new_book));
+        } else {
+            setTitle(getResources().getString(R.string.editing_activity_edit_existing_new_book));
+            // Kick off the loader
+            getSupportLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
+        }
+
+
+
         mSupplierNameEditText = (EditText) findViewById(R.id.edit_supplier_name);
         mSupplierPhoneNumberEditText = (EditText) findViewById(R.id.edit_supplier_phone_number);
-
         mProductNameSpinner = (Spinner) findViewById(R.id.spinner_product_name);
         mQuantityEditText = (EditText) findViewById(R.id.edit_book_quantity);
-
         mAuthorEditText = (EditText) findViewById(R.id.edit_book_author);
         mTitleEditText = (EditText) findViewById(R.id.edit_book_title);
         mYearEditText = (EditText) findViewById(R.id.edit_book_publication_year);
@@ -161,8 +184,15 @@ public class EditingActivity extends AppCompatActivity {
         int yearInt = Integer.parseInt(mYearEditText.getText().toString().trim());
         int priceInt = Integer.parseInt(mPriceEditText.getText().toString().trim());
 
-        BookDbHelper mDbHelper = new BookDbHelper(this);
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        // Check if this is supposed to be a new pet
+        // and check if all the fields in the editor are blank
+        if (mCurrentBookUri == null &&
+                TextUtils.isEmpty(authorString) && TextUtils.isEmpty(titleString) &&
+                TextUtils.isEmpty(languageString)) {
+            // Since no fields were modified, we can return early without creating a new pet.
+            // No need to create ContentValues and no need to do any ContentProvider operations.
+            return;
+        }
 
         ContentValues values = new ContentValues();
         values.put(BookEntry.COLUMN_BOOK_SUPPLIER_NAME, supplierNameString);
@@ -175,14 +205,16 @@ public class EditingActivity extends AppCompatActivity {
         values.put(BookEntry.COLUMN_BOOK_PUBLICATION_YEAR, yearInt);
         values.put(BookEntry.COLUMN_BOOK_PRICE, priceInt);
         values.put(BookEntry.COLUMN_BOOK_STATE, mState);
-        values.put(BookEntry.COLUMN_BOOK_STATE, mAvailability);
+        values.put(BookEntry.COLUMN_BOOK_AVAILABILITY, mAvailability);
 
-        long newRowId = db.insert(BookEntry.TABLE_NAME, null, values);
-        Log.e("ShelfActivity, ", "User input book inserted with newRowId: " + newRowId);
-        if (newRowId == -1) {
-            Toast.makeText(this, "Error with saving book", Toast.LENGTH_SHORT).show();
+        Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+
+        if (newUri == null) {
+            Toast.makeText(this, getString(R.string.editor_insert_pet_failure),
+                    Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Book saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -207,5 +239,134 @@ public class EditingActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // Since the editor shows all pet attributes, define a projection that contains
+        // all columns from the pet table
+        String[] projection = {BookEntry._ID,
+                BookEntry.COLUMN_BOOK_SUPPLIER_NAME,
+                BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER,
+
+                BookEntry.COLUMN_BOOK_PRODUCT_NAME,
+                BookEntry.COLUMN_BOOK_QUANTITY,
+                BookEntry.COLUMN_BOOK_AUTHOR,
+                BookEntry.COLUMN_BOOK_TITLE,
+                BookEntry.COLUMN_BOOK_PUBLICATION_YEAR,
+                BookEntry.COLUMN_BOOK_LANGUAGE,
+                BookEntry.COLUMN_BOOK_PRICE,
+                BookEntry.COLUMN_BOOK_STATE,
+                BookEntry.COLUMN_BOOK_AVAILABILITY,
+        };
+
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(this,   // Parent activity context
+                mCurrentBookUri,         // Query the content URI for the current pet
+                projection,             // Columns to include in the resulting Cursor
+                null,                   // No selection clause
+                null,                   // No selection arguments
+                null);                  // Default sort order
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        // Proceed with moving to the first row of the cursor and reading data from it
+        // (This should be the only row in the cursor)
+
+        if (cursor.moveToFirst()) {
+            int supplierNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPPLIER_NAME);
+            int supplierPhoneNumberColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER);
+            int productNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PRODUCT_NAME);
+            int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_QUANTITY);
+            int authorColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_AUTHOR);
+            int titleColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_TITLE);
+            int yearColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_PUBLICATION_YEAR));
+            int languageColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_LANGUAGE));
+            int priceColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_PRICE));
+            int stateColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_STATE));
+            int availabilityColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_AVAILABILITY));
+
+            String currentSupplierName = cursor.getString(supplierNameColumnIndex);
+            int currentSupplierPhoneNumber = cursor.getInt(supplierPhoneNumberColumnIndex);
+            String currentProductName = cursor.getString(productNameColumnIndex);
+            int currentQuantity = cursor.getInt(quantityColumnIndex);
+            String currentAuthor = cursor.getString(authorColumnIndex);
+            String currentTitle = cursor.getString(titleColumnIndex);
+            int currentYear = cursor.getInt(yearColumnIndex);
+            String currentLanguage = cursor.getString(languageColumnIndex);
+            int currentPrice = cursor.getInt(priceColumnIndex);
+            int currentState = cursor.getInt(stateColumnIndex);
+            int currentAvailability = cursor.getInt(availabilityColumnIndex);
+
+            mSupplierNameEditText.setText(currentSupplierName);
+            mSupplierPhoneNumberEditText.setText(Integer.toString(currentSupplierPhoneNumber));
+            mQuantityEditText.setText(Integer.toString(currentQuantity));
+            mAuthorEditText.setText(currentAuthor);
+            mTitleEditText.setText(currentTitle);
+            mYearEditText.setText(Integer.toString(currentYear));
+            mLanguageEditText.setText(currentLanguage);
+            mPriceEditText.setText(Integer.toString(currentPrice));
+
+            // Gender is a dropdown spinner, so map the constant value from the database
+            // into one of the dropdown options (0 is Unknown, 1 is Male, 2 is Female).
+            // Then call setSelection() so that option is displayed on screen as the current selection.
+
+            switch (currentProductName) {
+                case BookEntry.PRODUCT_NAME_KINDLE_BOOK:
+                    mProductNameSpinner.setSelection(0);
+                    break;
+                case BookEntry.PRODUCT_NAME_POCKET_BOOK:
+                    mProductNameSpinner.setSelection(1);
+                    break;
+                case BookEntry.PRODUCT_NAME_ALBUM:
+                    mProductNameSpinner.setSelection(3);
+                    break;
+                default:
+                    mProductNameSpinner.setSelection(2);
+                    break;
+            }
+
+            switch (currentState) {
+                case BookEntry.STATE_USED:
+                    mStateSpinner.setSelection(BookEntry.STATE_USED);
+                    break;
+                case BookEntry.STATE_NEW:
+                    mStateSpinner.setSelection(BookEntry.STATE_NEW);
+                    break;
+                default:
+                    mStateSpinner.setSelection(BookEntry.STATE_UNKNOWN);
+                    break;
+            }
+
+            switch (currentAvailability) {
+                case BookEntry.AVAILABILITY_IN_STORAGE:
+                    mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_IN_STORAGE);
+                    break;
+                case BookEntry.AVAILABILITY_IN_STORE:
+                    mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_IN_STORE);
+                    break;
+                default:
+                    mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_NOT_AVAILABLE);
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // If the loader is invalidated, clear out all the data from the input fields.
+        mSupplierNameEditText.setText("");
+        mSupplierPhoneNumberEditText.setText("");
+        mQuantityEditText.setText("");
+        mAuthorEditText.setText("");
+        mTitleEditText.setText("");
+        mYearEditText.setText("");
+        mLanguageEditText.setText("");
+        mPriceEditText.setText("");
+
+        mProductNameSpinner.setSelection(2);
+        mStateSpinner.setSelection(BookEntry.STATE_UNKNOWN);
+        mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_NOT_AVAILABLE);
     }
 }

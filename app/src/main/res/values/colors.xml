@@ -4,7 +4,9 @@
     <color name="colorPrimary">#004D40</color>
     <color name="colorPrimaryDark">#1A237E</color>
     <color name="colorAccent">#69F0AE</color>
-    <color name="colorligthGray">#FAFAFA</color>
+    <color name="colorLightGray">#FAFAFA</color>
+    <color name="colorDarkGray">#424242</color>
+    <color name="colorLightPurple">#C5CAE9</color>
     <color name="editorColorPrimary">#2D3640</color>
     <color name="editorColorPrimaryDark">#394450</color>
 </resources>

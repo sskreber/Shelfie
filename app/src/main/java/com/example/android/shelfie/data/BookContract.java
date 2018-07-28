@@ -1,5 +1,7 @@
 package com.example.android.shelfie.data;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public final class BookContract {
@@ -7,7 +9,25 @@ public final class BookContract {
     public BookContract() {
     }
 
+    public static final String CONTENT_AUTHORITY = "com.example.android.shelfie";
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    public static final String PATH_BOOKS = "books";
+
     public static abstract class BookEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_BOOKS);
+
+        /**
+         * The MIME type of the {@link #CONTENT_URI} for a list of pets.
+         */
+        public static final String CONTENT_LIST_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_BOOKS;
+
+        /**
+         * The MIME type of the {@link #CONTENT_URI} for a single pet.
+         */
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_BOOKS;
 
         public static final String TABLE_NAME = "books";
 
@@ -25,7 +45,6 @@ public final class BookContract {
         public static final String COLUMN_BOOK_LANGUAGE = "language";
         public static final String COLUMN_BOOK_PRICE = "price";
         public static final String COLUMN_BOOK_STATE = "state";
-        public static final String COLUMN_BOOK_CATEGORY = "category";
         public static final String COLUMN_BOOK_AVAILABILITY = "availability";
 
         public static final String PRODUCT_NAME_KINDLE_BOOK = "kindle book";
@@ -40,5 +59,31 @@ public final class BookContract {
         public static final int AVAILABILITY_NOT_AVAILABLE = 0;
         public static final int AVAILABILITY_IN_STORAGE = 1;
         public static final int AVAILABILITY_IN_STORE = 2;
+
+        public static boolean isValidProductName(String productName) {
+            if (productName.equals(PRODUCT_NAME_KINDLE_BOOK) ||
+                    productName.equals(PRODUCT_NAME_POCKET_BOOK) ||
+                    productName.equals(PRODUCT_NAME_STANDARD_BOOK) ||
+                    productName.equals(PRODUCT_NAME_ALBUM)) {
+                return true;
+            }
+            return false;
+        }
+
+        public static boolean isValidState(int state) {
+            if (state == STATE_UNKNOWN || state == STATE_USED || state == STATE_NEW) {
+                return true;
+            }
+            return false;
+        }
+
+        public static boolean isValidAvailability(int availability) {
+            if (availability == AVAILABILITY_NOT_AVAILABLE ||
+                    availability == AVAILABILITY_IN_STORAGE ||
+                    availability == AVAILABILITY_IN_STORE) {
+                return true;
+            }
+            return false;
+        }
     }
 }

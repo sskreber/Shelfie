@@ -1,27 +1,37 @@
 package com.example.android.shelfie;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.android.shelfie.data.BookContract.BookEntry;
 import com.example.android.shelfie.data.BookDbHelper;
 import com.facebook.stetho.Stetho;
 
-public class ShelfActivity extends AppCompatActivity {
+public class ShelfActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private BookDbHelper mBookDbHelper;
+    protected static final int BOOK_LOADER = 0;
+    BookCursorAdapter mBookCursorAdapter;
+
+    BookDbHelper mBookDbHelper;
     private int dataBaseOldVersion = 1;
     private int dataBaseNewVersion = dataBaseOldVersion + 1;
+    private ListView bookListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +47,83 @@ public class ShelfActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        setEmptyListView();
 
-        mBookDbHelper = new BookDbHelper(this);
-        displayDatabaseInfo();
+        mBookCursorAdapter = new BookCursorAdapter(this, null);
+        bookListView.setAdapter(mBookCursorAdapter);
+
+        //if a lsit item is clicked on, the EditingActivity displaying that entry's data will be launched
+        bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ShelfActivity.this, EditingActivity.class);
+                Uri currentPetUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+                intent.setData(currentPetUri);
+                startActivity(intent);
+            }
+        });
+
+        // Kick off the loader
+        getSupportLoaderManager().initLoader(BOOK_LOADER, null, this);
+    }
+
+    private void setEmptyListView() {
+        bookListView = (ListView) findViewById(R.id.list);
+        View emptyView = findViewById(R.id.empty_view);
+        bookListView.setEmptyView(emptyView);
+    }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_shelf, menu);
+        return true;
+    }
+
+    private void insertDummyBookData() {
+        ContentValues values = new ContentValues();
+        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_NAME, "Antique Books Ltd");
+        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER, 3406306891690L);
+        values.put(BookEntry.COLUMN_BOOK_PRODUCT_NAME, BookEntry.PRODUCT_NAME_STANDARD_BOOK);
+        values.put(BookEntry.COLUMN_BOOK_QUANTITY, 1);
+
+        values.put(BookEntry.COLUMN_BOOK_AUTHOR, "Labiche");
+        values.put(BookEntry.COLUMN_BOOK_TITLE, "Plays I.");
+        values.put(BookEntry.COLUMN_BOOK_PUBLICATION_YEAR, 1989);
+        values.put(BookEntry.COLUMN_BOOK_LANGUAGE, "French");
+        values.put(BookEntry.COLUMN_BOOK_PRICE, 12);
+        values.put(BookEntry.COLUMN_BOOK_STATE, BookEntry.STATE_USED);
+        values.put(BookEntry.COLUMN_BOOK_AVAILABILITY, BookEntry.AVAILABILITY_IN_STORE);
+
+        Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+    }
+
+    private void deleteAllDatabaseEntries() {
+        SQLiteDatabase db = mBookDbHelper.getWritableDatabase();
+        dataBaseOldVersion++;
+        mBookDbHelper.onUpgrade(db, dataBaseOldVersion, dataBaseNewVersion);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_dummy_data:
+                insertDummyBookData();
+                return true;
+            case R.id.action_delete_database_entries:
+                deleteAllDatabaseEntries();
+                onStart();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    // helper method to check database entries on screen - TODO: delete when frontend complete
-    private void displayDatabaseInfo() {
-        SQLiteDatabase db = mBookDbHelper.getReadableDatabase();
-
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String[] projection = {BookEntry._ID,
                 BookEntry.COLUMN_BOOK_SUPPLIER_NAME,
                 BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER,
@@ -67,123 +139,22 @@ public class ShelfActivity extends AppCompatActivity {
                 BookEntry.COLUMN_BOOK_AVAILABILITY,
         };
 
-        Cursor cursor = db.query(BookEntry.TABLE_NAME,
+        return new CursorLoader(this,
+                BookEntry.CONTENT_URI,
                 projection,
                 null,
                 null,
-                null,
-                null,
                 null);
-
-        TextView displayView = (TextView) findViewById(R.id.text_view_book);
-
-        try {
-            displayView.setText("The books table contains " + cursor.getCount() + " entries.\n\n");
-            displayView.append(BookEntry._ID + " - " +
-                    BookEntry.COLUMN_BOOK_SUPPLIER_NAME + " - "
-                    + BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER + " - "
-                    + BookEntry.COLUMN_BOOK_PRODUCT_NAME + " - "
-                    + BookEntry.COLUMN_BOOK_QUANTITY + " - "
-                    + BookEntry.COLUMN_BOOK_AUTHOR + " - "
-                    + BookEntry.COLUMN_BOOK_TITLE + " - "
-                    + BookEntry.COLUMN_BOOK_PUBLICATION_YEAR + " - "
-                    + BookEntry.COLUMN_BOOK_LANGUAGE + " - "
-                    + BookEntry.COLUMN_BOOK_PRICE + " - "
-                    + BookEntry.COLUMN_BOOK_STATE + " - "
-                    + BookEntry.COLUMN_BOOK_AVAILABILITY + " - "
-                    + "\n");
-
-            int idColumnIndex = cursor.getColumnIndex(BookEntry._ID);
-            int supplierNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPPLIER_NAME);
-            int supplierPhoneNumberColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER);
-            int productNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_PRODUCT_NAME);
-            int quantityColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_QUANTITY);
-            int authorColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_AUTHOR);
-            int titleColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_TITLE);
-            int yearColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_PUBLICATION_YEAR));
-            int languageColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_LANGUAGE));
-            int priceColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_PRICE));
-            int stateColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_STATE));
-            int availabilityColumnIndex = cursor.getColumnIndex((BookEntry.COLUMN_BOOK_AVAILABILITY));
-
-            while (cursor.moveToNext()) {
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentSupplierName = cursor.getString(supplierNameColumnIndex);
-                int currentSupplierPhoneNumber = cursor.getInt(supplierPhoneNumberColumnIndex);
-
-                String currentProductName = cursor.getString(productNameColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                String currentAuthor = cursor.getString(authorColumnIndex);
-                String currentTitle = cursor.getString(titleColumnIndex);
-                int currentYear = cursor.getInt(yearColumnIndex);
-                String currentLanguage = cursor.getString(languageColumnIndex);
-                int currentPrice = cursor.getInt(priceColumnIndex);
-                int currentState = cursor.getInt(stateColumnIndex);
-                int currentAvailability = cursor.getInt(availabilityColumnIndex);
-
-                displayView.append(("\n" + currentID + " - "
-                        + currentSupplierName + " - "
-                        + currentSupplierPhoneNumber + " - "
-                        + currentProductName + " - "
-                        + "quantity: " + currentQuantity + " - "
-                        + currentAuthor + " - "
-                        + currentTitle + " - "
-                        + currentYear + " - "
-                        + currentLanguage + " - "
-                        + currentPrice + " euros - "
-                        + "state " + currentState + " - "
-                        + currentAvailability));
-            }
-        } finally {
-            cursor.close();
-        }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_shelf, menu);
-        return true;
-    }
-
-    private void insertBook() {
-        SQLiteDatabase db = mBookDbHelper.getWritableDatabase();
-        dataBaseOldVersion = db.getVersion();
-        ContentValues values = new ContentValues();
-        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_NAME, "Antique Books Ltd");
-        values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER, 3406306891690L);
-        values.put(BookEntry.COLUMN_BOOK_PRODUCT_NAME, BookEntry.PRODUCT_NAME_STANDARD_BOOK);
-        values.put(BookEntry.COLUMN_BOOK_QUANTITY, 1);
-
-        values.put(BookEntry.COLUMN_BOOK_AUTHOR, "Labiche");
-        values.put(BookEntry.COLUMN_BOOK_TITLE, "Plays I.");
-        values.put(BookEntry.COLUMN_BOOK_PUBLICATION_YEAR, 1989);
-        values.put(BookEntry.COLUMN_BOOK_LANGUAGE, "French");
-        values.put(BookEntry.COLUMN_BOOK_PRICE, 12);
-        values.put(BookEntry.COLUMN_BOOK_STATE, BookEntry.STATE_USED);
-        values.put(BookEntry.COLUMN_BOOK_AVAILABILITY, BookEntry.AVAILABILITY_IN_STORE);
-
-        long newRowId = db.insert(BookEntry.TABLE_NAME, null, values);
-        Log.e("ShelfActivity, ", "newRowId: " + newRowId);
-    }
-
-    private void deleteAllDatabaseEntries() {
-        SQLiteDatabase db = mBookDbHelper.getWritableDatabase();
-        dataBaseOldVersion++;
-        mBookDbHelper.onUpgrade(db, dataBaseOldVersion, dataBaseNewVersion);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // update CursorAdapter with new Cursor & the data it contains
+        mBookCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_dummy_data:
-                insertBook();
-                displayDatabaseInfo();
-                return true;
-            case R.id.action_delete_database_entries:
-                deleteAllDatabaseEntries();
-                onStart();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mBookCursorAdapter.swapCursor(null);
     }
 }

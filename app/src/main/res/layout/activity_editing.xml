@@ -3,7 +3,7 @@
     android:id="@+id/scrollview_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/colorligthGray"
+    android:backgroundTint="@color/colorLightGray"
     android:paddingBottom="@dimen/small_margin"
     android:paddingTop="@dimen/small_margin">
 

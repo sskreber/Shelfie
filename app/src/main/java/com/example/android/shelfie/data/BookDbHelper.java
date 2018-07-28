@@ -28,10 +28,10 @@ public class BookDbHelper extends SQLiteOpenHelper {
                 + BookEntry.COLUMN_BOOK_PRODUCT_NAME + " TEXT, "
                 + BookEntry.COLUMN_BOOK_QUANTITY + " INTEGER NOT NULL DEFAULT 1, "
 
-                + BookEntry.COLUMN_BOOK_AUTHOR + " TEXT, "
-                + BookEntry.COLUMN_BOOK_TITLE + " TEXT, "
+                + BookEntry.COLUMN_BOOK_AUTHOR + " TEXT NOT NULL, "
+                + BookEntry.COLUMN_BOOK_TITLE + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_PUBLICATION_YEAR + " INTEGER, "
-                + BookEntry.COLUMN_BOOK_LANGUAGE + " TEXT, "
+                + BookEntry.COLUMN_BOOK_LANGUAGE + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_PRICE + " INTEGER, "
 
                 + BookEntry.COLUMN_BOOK_STATE + " INTEGER, "

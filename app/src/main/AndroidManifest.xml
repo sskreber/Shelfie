@@ -19,13 +19,16 @@
         </activity>
         <activity
             android:name=".EditingActivity"
-            android:label="@string/editing_activity_add_new_book"
             android:parentActivityName=".ShelfActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShelfActivity" />
         </activity>
+        <provider
+            android:name=".data.BookProvider"
+            android:authorities="com.example.android.shelfie"
+            android:exported="false" />
     </application>
 
 </manifest>

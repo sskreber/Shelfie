@@ -5,6 +5,8 @@
     <string name="action_insert_dummy_data">Add dummy data</string>
     <string name="action_delete_all_entries">Delete database entries</string>
     <string name="editing_activity_add_new_book">Add a book</string>
+    <string name="editing_activity_edit_existing_new_book">Edit book</string>
+
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
 
@@ -38,5 +40,17 @@
     <string name="availability_not_available">Not available</string>
     <string name="availability_in_storage">In storage</string>
     <string name="availability_in_store">In store</string>
+
+    <string name="editor_insert_pet_successful">Book successfully saved</string>
+    <string name="editor_insert_pet_failure">Error saving pet</string>
+
+    <string name="listview_book_author_placeholder">Eugene Labiche</string>
+    <string name="listview_book_title_placeholder">Stage plays I.</string>
+
+    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
+    <string name="empty_view_title_text">Not a lot of books here&#8230;</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a pet [CHAR LIMIT=50] -->
+    <string name="empty_view_subtitle_text">Add to the inventory!</string>
 
 </resources>
