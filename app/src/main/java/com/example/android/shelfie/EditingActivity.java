@@ -172,17 +172,15 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     private void saveBook() {
         String supplierNameString = mSupplierNameEditText.getText().toString().trim();
-        int supplierPhoneNumberInt = Integer.parseInt(mSupplierPhoneNumberEditText.getText().toString());
-
-        int quantityInt = Integer.parseInt(mQuantityEditText.getText().toString().trim());
         String authorString = mAuthorEditText.getText().toString().trim();
         String titleString = mTitleEditText.getText().toString().trim();
         String languageString = mLanguageEditText.getText().toString().trim();
+        String supplierPhoneNumberString = mSupplierPhoneNumberEditText.getText().toString();
+        String quantityString = mQuantityEditText.getText().toString().trim();
+        String yearString = mYearEditText.getText().toString().trim();
+        String priceString = mPriceEditText.getText().toString().trim();
 
-        int yearInt = Integer.parseInt(mYearEditText.getText().toString().trim());
-        int priceInt = Integer.parseInt(mPriceEditText.getText().toString().trim());
-
-        // Check if this is supposed to be a new pet & whether the most important required edit fields were left blank
+        // Check if this is supposed to be a new book & whether the most important required edit fields were left blank
         if (mCurrentBookUri == null &&
                 TextUtils.isEmpty(authorString) && TextUtils.isEmpty(titleString) &&
                 TextUtils.isEmpty(languageString)) {
@@ -190,6 +188,11 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
         }
+
+        int supplierPhoneNumberInt = setValidIntegerDataFromEditTextString(supplierPhoneNumberString);
+        int quantityInt = setValidIntegerDataFromEditTextString(quantityString);
+        int yearInt = setValidIntegerDataFromEditTextString(yearString);
+        int priceInt = setValidIntegerDataFromEditTextString(priceString);
 
         ContentValues values = new ContentValues();
         values.put(BookEntry.COLUMN_BOOK_SUPPLIER_NAME, supplierNameString);
@@ -226,6 +229,18 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                         Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private boolean validateIfValueOfIntegerDataNotNull(String attributeNameString) {
+        return (!TextUtils.isEmpty(attributeNameString));
+    }
+
+    private int setValidIntegerDataFromEditTextString(String EditTextStringToParse) {
+        int attributeInteger = 0;
+        if (validateIfValueOfIntegerDataNotNull(EditTextStringToParse)) {
+            attributeInteger = Integer.parseInt(EditTextStringToParse);
+        }
+        return attributeInteger;
     }
 
     @Override
