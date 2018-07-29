@@ -1,6 +1,7 @@
 package com.example.android.shelfie;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,12 +11,14 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,6 +50,15 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     private int mAvailability = 0;
 
     Uri mCurrentBookUri;
+    private boolean mBookHasChanged = false;
+
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            mBookHasChanged = true;
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +70,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
         if (mCurrentBookUri == null) {
             setTitle(getResources().getString(R.string.editing_activity_add_new_book));
+            invalidateOptionsMenu();
         } else {
             setTitle(getResources().getString(R.string.editing_activity_edit_existing_new_book));
             // Kick off the loader
@@ -75,6 +88,18 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         mPriceEditText = (EditText) findViewById(R.id.edit_book_price);
         mStateSpinner = (Spinner) findViewById(R.id.spinner_state);
         mAvailabilitySpinner = (Spinner) findViewById(R.id.spinner_availability);
+
+        mSupplierNameEditText.setOnTouchListener(mTouchListener);
+        mSupplierPhoneNumberEditText.setOnTouchListener(mTouchListener);
+        mProductNameSpinner.setOnTouchListener(mTouchListener);
+        mQuantityEditText.setOnTouchListener(mTouchListener);
+        mAuthorEditText.setOnTouchListener(mTouchListener);
+        mTitleEditText.setOnTouchListener(mTouchListener);
+        mYearEditText.setOnTouchListener(mTouchListener);
+        mLanguageEditText.setOnTouchListener(mTouchListener);
+        mPriceEditText.setOnTouchListener(mTouchListener);
+        mStateSpinner.setOnTouchListener(mTouchListener);
+        mAvailabilitySpinner.setOnTouchListener(mTouchListener);
 
         setupProductNameSpinner();
         setupStateSpinner();
@@ -243,6 +268,45 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         return attributeInteger;
     }
 
+    private void showUnsavedChangesDialog(
+            DialogInterface.OnClickListener discardButtonClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.unsaved_changes_dialog_msg);
+        builder.setPositiveButton(R.string.unsaved_changes_discard, discardButtonClickListener);
+        builder.setNegativeButton(R.string.unsaved_changes_stay, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Keep editing" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // If the entry hasn't changed, handle back button press
+        if (!mBookHasChanged) {
+            super.onBackPressed();
+            return;
+        }
+
+        // if entry has changed:
+        DialogInterface.OnClickListener discardButtonClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // User clicked "Discard" button, close the current activity.
+                        finish();
+                    }
+                };
+        showUnsavedChangesDialog(discardButtonClickListener);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_editing, menu);
@@ -260,7 +324,26 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                // If the pet hasn't changed, continue with navigating up to parent activity
+                // which is the {@link CatalogActivity}.
+                if (!mBookHasChanged) {
+                    NavUtils.navigateUpFromSameTask(EditingActivity.this);
+                    return true;
+                }
+
+                // Otherwise if there are unsaved changes, setup a dialog to warn the user.
+                // Create a click listener to handle the user confirming that
+                // changes should be discarded.
+                DialogInterface.OnClickListener discardButtonClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // User clicked "Discard" button, navigate to parent activity.
+                                NavUtils.navigateUpFromSameTask(EditingActivity.this);
+                            }
+                        };
+                // Show a dialog that notifies the user they have unsaved changes
+                showUnsavedChangesDialog(discardButtonClickListener);
                 return true;
         }
         return super.onOptionsItemSelected(item);
