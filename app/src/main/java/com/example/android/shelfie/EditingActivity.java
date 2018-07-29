@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -13,9 +12,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -27,7 +24,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.shelfie.data.BookContract.BookEntry;
-import com.example.android.shelfie.data.BookDbHelper;
 
 
 public class EditingActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -73,7 +69,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             invalidateOptionsMenu();
         } else {
             setTitle(getResources().getString(R.string.editing_activity_edit_existing_new_book));
-            // Kick off the loader
+            // Initialize loader
             getSupportLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
         }
 
@@ -209,8 +205,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         if (mCurrentBookUri == null &&
                 TextUtils.isEmpty(authorString) && TextUtils.isEmpty(titleString) &&
                 TextUtils.isEmpty(languageString)) {
-            // Since no fields were modified, we can return early without creating a new entry.
-            // No need to create ContentValues and no need to do any ContentProvider operations.
+            // Since no fields were modified, return to parent activity without creating a new entry.
             return;
         }
 
@@ -275,8 +270,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         builder.setPositiveButton(R.string.unsaved_changes_discard, discardButtonClickListener);
         builder.setNegativeButton(R.string.unsaved_changes_stay, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // User clicked "Keep editing" button - dismiss dialog, continue editing.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -331,28 +325,24 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                 finish();
                 return true;
             case R.id.action_delete:
-                NavUtils.navigateUpFromSameTask(this);
+                showDeleteConfirmationDialog();
                 return true;
             case android.R.id.home:
-                // If the pet hasn't changed, continue with navigating up to parent activity
-                // which is the {@link CatalogActivity}.
+                // If the book entry hasn't changed, go back to parent activity
                 if (!mBookHasChanged) {
                     NavUtils.navigateUpFromSameTask(EditingActivity.this);
                     return true;
                 }
 
-                // Otherwise if there are unsaved changes, setup a dialog to warn the user.
-                // Create a click listener to handle the user confirming that
-                // changes should be discarded.
+                // Dialog to warn user about unsaved changes
                 DialogInterface.OnClickListener discardButtonClickListener =
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // User clicked "Discard" button, navigate to parent activity.
+                                // User clicked "Discard" button: navigate to parent activity.
                                 NavUtils.navigateUpFromSameTask(EditingActivity.this);
                             }
                         };
-                // Show a dialog that notifies the user they have unsaved changes
                 showUnsavedChangesDialog(discardButtonClickListener);
                 return true;
         }
@@ -361,8 +351,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // Since the editor shows all pet attributes, define a projection that contains
-        // all columns from the pet table
+        // A projection containing all columns from the table
         String[] projection = {BookEntry._ID,
                 BookEntry.COLUMN_BOOK_SUPPLIER_NAME,
                 BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER,
@@ -378,19 +367,18 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                 BookEntry.COLUMN_BOOK_AVAILABILITY,
         };
 
-        // This loader will execute the ContentProvider's query method on a background thread
-        return new CursorLoader(this,   // Parent activity context
-                mCurrentBookUri,         // Query the content URI for the current pet
-                projection,             // Columns to include in the resulting Cursor
-                null,                   // No selection clause
-                null,                   // No selection arguments
-                null);                  // Default sort order
+        // Loader executes ContentProvider's query method on a background thread
+        return new CursorLoader(this,
+                mCurrentBookUri,
+                projection,
+                null,
+                null,
+                null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        // Proceed with moving to the first row of the cursor and reading data from it
-        // (This should be the only row in the cursor)
+        // Move to the first (and only) row of the cursor (there's only one chosen book entry now), read its data
 
         if (cursor.moveToFirst()) {
             int supplierNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPPLIER_NAME);
@@ -426,9 +414,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             mLanguageEditText.setText(currentLanguage);
             mPriceEditText.setText(Integer.toString(currentPrice));
 
-            // Gender is a dropdown spinner, so map the constant value from the database
-            // into one of the dropdown options (0 is Unknown, 1 is Male, 2 is Female).
-            // Then call setSelection() so that option is displayed on screen as the current selection.
+            // Set dropdown spinners to existing entry's attribute
 
             switch (currentProductName) {
                 case BookEntry.PRODUCT_NAME_KINDLE_BOOK:
@@ -473,7 +459,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // If the loader is invalidated, clear out all the data from the input fields.
+        // Clear input fields:
         mSupplierNameEditText.setText("");
         mSupplierPhoneNumberEditText.setText("");
         mQuantityEditText.setText("");
@@ -487,4 +473,40 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         mStateSpinner.setSelection(BookEntry.STATE_UNKNOWN);
         mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_NOT_AVAILABLE);
     }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deletePet();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deletePet() {
+        if (mCurrentBookUri != null) {
+            int rowsDeleted = getContentResolver().delete(mCurrentBookUri, null, null);
+
+            if (rowsDeleted == 0) {
+                Toast.makeText(this, getString(R.string.editor_delete_book_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_delete_book_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+        finish();
+    }
 }
+

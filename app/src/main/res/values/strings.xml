@@ -49,17 +49,17 @@
     <string name="listview_book_author_placeholder">Eugene Labiche</string>
     <string name="listview_book_title_placeholder">Stage plays I.</string>
 
-    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
     <string name="empty_view_title_text">Not a lot of books here&#8230;</string>
-
-    <!-- Subtitle text for the empty view that prompts the user to add a pet [CHAR LIMIT=50] -->
     <string name="empty_view_subtitle_text">Add to the inventory!</string>
 
-    <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
-    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
     <string name="unsaved_changes_discard">Discard</string>
-    <!-- Dialog button text for the option to keep editing the current pet [CHAR LIMIT=20] -->
     <string name="unsaved_changes_stay">Stay</string>
+
+    <string name="editor_delete_book_successful">Book entry successfully deleted</string>
+    <string name="editor_delete_book_failed">Error deleting book entry</string>
+    <string name="delete_dialog_msg">Delete book from inventory?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 
 </resources>
