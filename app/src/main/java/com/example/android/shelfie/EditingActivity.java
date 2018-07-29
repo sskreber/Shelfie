@@ -289,7 +289,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onBackPressed() {
-        // If the entry hasn't changed, handle back button press
+        // If the entry hasn't changed, handle back button press:
         if (!mBookHasChanged) {
             super.onBackPressed();
             return;
@@ -300,7 +300,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // User clicked "Discard" button, close the current activity.
+                        // If user clicks "Discard" button:
                         finish();
                     }
                 };
@@ -310,6 +310,16 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_editing, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (mCurrentBookUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
         return true;
     }
 
