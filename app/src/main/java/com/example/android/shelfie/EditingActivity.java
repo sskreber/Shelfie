@@ -48,6 +48,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     private int mAvailability = 0;
 
     private String mSupplierPhoneNumber = "";
+    int quantityInt = 0;
 
     Uri mCurrentBookUri;
     private boolean mBookHasChanged = false;
@@ -214,7 +215,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         }
 
         int supplierPhoneNumberInt = setValidIntegerDataFromEditTextString(supplierPhoneNumberString);
-        int quantityInt = setValidIntegerDataFromEditTextString(quantityString);
+        quantityInt = setValidIntegerDataFromEditTextString(quantityString);
         int yearInt = setValidIntegerDataFromEditTextString(yearString);
         int priceInt = setValidIntegerDataFromEditTextString(priceString);
 
@@ -517,5 +518,20 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             startActivity(phoneCallIntent);
         }
     }
-}
+    
+    public void decreaseProductQuantity(View view) {
+        quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
+        if (quantityInt == 0) {
+            Toast.makeText(this, R.string.button_quantity_change_failure_msg, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        quantityInt--;
+        mQuantityEditText.setText(String.valueOf(quantityInt));
+    }
 
+    public void increaseProductQuantity(View view) {
+        quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
+        quantityInt++;
+        mQuantityEditText.setText(String.valueOf(quantityInt));
+    }
+}

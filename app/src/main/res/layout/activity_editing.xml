@@ -111,7 +111,7 @@
                         android:background="@color/colorAccent"
                         android:layout_width="@dimen/button_quantity_size"
                         android:layout_height="@dimen/button_quantity_size"
-                        android:onClick="decreaseQuantiy"
+                        android:onClick="decreaseProductQuantity"
                         android:text="@string/button_text_decrease_quantity"/>
 
                     <EditText
@@ -127,7 +127,7 @@
                         android:background="@color/colorAccent"
                         android:layout_width="@dimen/button_quantity_size"
                         android:layout_height="@dimen/button_quantity_size"
-                        android:onClick="increaseQuantiy"
+                        android:onClick="increaseProductQuantity"
                         android:text="@string/button_text_increase_quantity" />
                 </LinearLayout>
 
