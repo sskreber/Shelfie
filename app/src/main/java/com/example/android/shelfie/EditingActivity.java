@@ -64,8 +64,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             getSupportLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
         }
 
-
-
         mSupplierNameEditText = (EditText) findViewById(R.id.edit_supplier_name);
         mSupplierPhoneNumberEditText = (EditText) findViewById(R.id.edit_supplier_phone_number);
         mProductNameSpinner = (Spinner) findViewById(R.id.spinner_product_name);
@@ -221,10 +219,10 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             // update existing book:
             int rowsAffected = getContentResolver().update(mCurrentBookUri, values, null, null);
             if (rowsAffected == 0) {
-                Toast.makeText(this, getString(R.string.editor_insert_book_failure),
+                Toast.makeText(this, getString(R.string.editor_edit_book_failure),
                         Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, getString(R.string.editor_insert_book_successful),
+                Toast.makeText(this, getString(R.string.editor_edit_book_successful),
                         Toast.LENGTH_SHORT).show();
             }
         }
