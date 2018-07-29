@@ -54,7 +54,7 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
         mBookCursorAdapter = new BookCursorAdapter(this, null);
         bookListView.setAdapter(mBookCursorAdapter);
 
-        // If list item clicked - activity displaying given entry's info will be laucnhed
+        // If list item clicked - activity displaying given entry's info will be launched
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

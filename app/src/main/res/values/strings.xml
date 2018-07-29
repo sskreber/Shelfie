@@ -66,4 +66,8 @@
     <string name="activity_shelf_display_unknown_author">Unknown author</string>
     <string name="activity_shelf_display_unknown_title">Unknown title</string>
 
+    <string name="button_text_call_supplier">Call supplier</string>
+    <string name="button_text_decrease_quantity">-</string>
+    <string name="button_text_increase_quantity">+</string>
+
 </resources>

@@ -46,6 +46,18 @@
             </LinearLayout>
         </LinearLayout>
 
+        <Button
+            android:id="@+id/button_call_supplier"
+            android:onClick="orderItemFromSupplier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_weight="1"
+            android:background="@color/colorLightPurple"
+            android:text="@string/button_text_call_supplier"
+            android:textColor="@color/colorDarkGray"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,11 +101,35 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/edit_book_quantity"
-                    style="@style/EditTextStyle"
-                    android:hint="@string/hint_book_quantity"
-                    android:inputType="phone" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/button_decrease_quantity"
+                        android:background="@color/colorAccent"
+                        android:layout_width="@dimen/button_quantity_size"
+                        android:layout_height="@dimen/button_quantity_size"
+                        android:onClick="decreaseQuantiy"
+                        android:text="@string/button_text_decrease_quantity"/>
+
+                    <EditText
+                        android:id="@+id/edit_book_quantity"
+                        android:layout_width="wrap_content"
+                        style="@style/EditTextStyle"
+                        android:gravity="center"
+                        android:hint="@string/hint_book_quantity"
+                        android:inputType="phone" />
+
+                    <Button
+                        android:id="@+id/button_increase_quantity"
+                        android:background="@color/colorAccent"
+                        android:layout_width="@dimen/button_quantity_size"
+                        android:layout_height="@dimen/button_quantity_size"
+                        android:onClick="increaseQuantiy"
+                        android:text="@string/button_text_increase_quantity" />
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/edit_book_author"

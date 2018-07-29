@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
@@ -19,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -44,6 +46,8 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     private int mState = 0;
     private Spinner mAvailabilitySpinner;
     private int mAvailability = 0;
+
+    private String mSupplierPhoneNumber = "";
 
     Uri mCurrentBookUri;
     private boolean mBookHasChanged = false;
@@ -403,6 +407,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
             mSupplierNameEditText.setText(currentSupplierName);
             mSupplierPhoneNumberEditText.setText(Integer.toString(currentSupplierPhoneNumber));
+            mSupplierPhoneNumber = (Integer.toString(currentSupplierPhoneNumber));
             mQuantityEditText.setText(Integer.toString(currentQuantity));
             mAuthorEditText.setText(currentAuthor);
             mTitleEditText.setText(currentTitle);
@@ -503,6 +508,14 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             }
         }
         finish();
+    }
+
+    public void orderItemFromSupplier(View view) {
+        Intent phoneCallIntent = new Intent(Intent.ACTION_DIAL);
+        phoneCallIntent.setData(Uri.parse("tel:" + mSupplierPhoneNumber));
+        if (phoneCallIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(phoneCallIntent);
+        }
     }
 }
 
