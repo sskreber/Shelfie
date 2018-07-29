@@ -70,5 +70,6 @@
     <string name="button_text_decrease_quantity">-</string>
     <string name="button_text_increase_quantity">+</string>
     <string name="button_quantity_change_failure_msg">Cannot be less than 0!</string>
+    <string name="button_quantity_change_to_out_of_stock_msg">Item became out of stock</string>
 
 </resources>

@@ -518,17 +518,23 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             startActivity(phoneCallIntent);
         }
     }
-    
+
+    // Product quantity can't be less than 0.
+    // If quantity was > 0 but becomes 0 after decrease, its availability spinner will be set to NOT AVAILABLE.
     public void decreaseProductQuantity(View view) {
         quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
         if (quantityInt == 0) {
             Toast.makeText(this, R.string.button_quantity_change_failure_msg, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (quantityInt == 1) {
+            Toast.makeText(this, R.string.button_quantity_change_to_out_of_stock_msg, Toast.LENGTH_SHORT).show();
+            mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_NOT_AVAILABLE);
+        }
         quantityInt--;
         mQuantityEditText.setText(String.valueOf(quantityInt));
     }
-
+    
     public void increaseProductQuantity(View view) {
         quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
         quantityInt++;
