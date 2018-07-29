@@ -135,6 +135,7 @@ public class BookProvider extends ContentProvider {
         }
     }
 
+    // app doesn't accept books dating back earlier than 1600
     private void validateInputPublicationYear(ContentValues values) {
         Integer publicationYear = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_PUBLICATION_YEAR);
         if (publicationYear != null && publicationYear != 0 && publicationYear <= 1600) {
