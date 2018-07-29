@@ -251,13 +251,9 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
-    private boolean validateIfValueOfIntegerDataNotNull(String attributeNameString) {
-        return (!TextUtils.isEmpty(attributeNameString));
-    }
-
     private int setValidIntegerDataFromEditTextString(String EditTextStringToParse) {
         int attributeInteger = 0;
-        if (validateIfValueOfIntegerDataNotNull(EditTextStringToParse)) {
+        if (!TextUtils.isEmpty(EditTextStringToParse)) {
             attributeInteger = Integer.parseInt(EditTextStringToParse);
         }
         return attributeInteger;

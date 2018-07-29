@@ -2,6 +2,7 @@ package com.example.android.shelfie;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,16 @@ public class BookCursorAdapter extends CursorAdapter {
         String bookAuthor = cursor.getString(authorNameColumnIndex);
         String bookTitle = cursor.getString(titleColumnIndex);
 
-        bookAuthorTextView.setText(bookAuthor);
-        bookTitleTextView.setText(bookTitle);
+        if (TextUtils.isEmpty(bookAuthor)) {
+            bookAuthorTextView.setText(R.string.activity_shelf_display_unknown_author);
+        } else {
+            bookAuthorTextView.setText(bookAuthor);
+        }
+
+        if (TextUtils.isEmpty(bookTitle)) {
+            bookTitleTextView.setText(R.string.activity_shelf_display_unknown_title);
+        } else {
+            bookTitleTextView.setText(bookTitle);
+        }
     }
 }

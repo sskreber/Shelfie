@@ -137,7 +137,7 @@ public class BookProvider extends ContentProvider {
 
     private void validateInputPublicationYear(ContentValues values) {
         Integer publicationYear = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_PUBLICATION_YEAR);
-        if (publicationYear != null && publicationYear <= 1700) {
+        if (publicationYear != null && publicationYear != 0 && publicationYear <= 1600) {
             throw new IllegalArgumentException("Book requires valid publication year");
         }
     }
@@ -152,21 +152,21 @@ public class BookProvider extends ContentProvider {
     private void validateInputProductName(ContentValues values) {
         String productName = values.getAsString(BookContract.BookEntry.COLUMN_BOOK_PRODUCT_NAME);
         if (productName != null && !BookContract.BookEntry.isValidProductName(productName)) {
-            throw new IllegalArgumentException("Pet requires valid product name");
+            throw new IllegalArgumentException("Book requires valid product name");
         }
     }
 
     private void validateInputState(ContentValues values) {
         Integer state = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_STATE);
         if (state != null && !BookContract.BookEntry.isValidState(state)) {
-            throw new IllegalArgumentException("Pet requires valid state");
+            throw new IllegalArgumentException("Book requires valid state");
         }
     }
 
     private void validateInputAvailability(ContentValues values) {
         Integer availability = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_AVAILABILITY);
         if (availability == null || !BookContract.BookEntry.isValidAvailability(availability)) {
-            throw new IllegalArgumentException("Pet requires valid availability");
+            throw new IllegalArgumentException("Book requires valid availability");
         }
     }
 

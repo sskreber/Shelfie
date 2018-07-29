@@ -63,4 +63,7 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
 
+    <string name="activity_shelf_display_unknown_author">Unknown author</string>
+    <string name="activity_shelf_display_unknown_title">Unknown title</string>
+
 </resources>

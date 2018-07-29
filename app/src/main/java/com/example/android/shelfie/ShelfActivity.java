@@ -54,7 +54,7 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
         mBookCursorAdapter = new BookCursorAdapter(this, null);
         bookListView.setAdapter(mBookCursorAdapter);
 
-        //if a lsit item is clicked on, the EditingActivity displaying that entry's data will be launched
+        // If list item clicked - activity displaying given entry's info will be laucnhed
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -65,7 +65,7 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
 
-        // Kick off the loader
+        // Initialize loader
         getSupportLoaderManager().initLoader(BOOK_LOADER, null, this);
     }
 
@@ -74,11 +74,6 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
         View emptyView = findViewById(R.id.empty_view);
         bookListView.setEmptyView(emptyView);
     }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
