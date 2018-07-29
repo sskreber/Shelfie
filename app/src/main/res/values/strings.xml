@@ -10,7 +10,7 @@
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
 
-    <string name="category_product_name">Product name</string>
+    <string name="category_product_name">Name: </string>
     <string name="category_supplier">Supplier details</string>
     <string name="category_overview">Product overview</string>
     <string name="category_state">State</string>
@@ -79,6 +79,6 @@
     <string name="button_sale_failure_msg">Failure to decrease product quantity</string>
     <string name="button_sale_item_unavailable_msg">Item already out of stock</string>
 
-    <string name="pound">£</string>
+    <string name="euro">\u20ac</string>
 
 </resources>

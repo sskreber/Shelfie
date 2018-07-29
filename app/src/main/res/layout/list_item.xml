@@ -8,74 +8,51 @@
     android:padding="@dimen/medium_margin">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/book_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextStyle"
             android:fontFamily="sans-serif-medium"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/colorDarkGray"
+
             tools:text="@string/listview_book_author_placeholder" />
 
         <TextView
             android:id="@+id/book_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingBottom="@dimen/small_margin"
-            android:paddingLeft="@dimen/medium_margin"
-            android:paddingTop="@dimen/small_margin"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@color/colorDarkGray"
+            style="@style/TextStyle"
             tools:text="@string/listview_book_title_placeholder" />
 
         <TextView
             android:id="@+id/book_product_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingBottom="@dimen/small_margin"
-            android:paddingLeft="@dimen/medium_margin"
-            android:paddingTop="@dimen/small_margin"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@color/colorDarkGray"
+            style="@style/TextStyle"
             tools:text="@string/category_product_name" />
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/book_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:paddingBottom="@dimen/small_margin"
-        android:paddingLeft="@dimen/medium_margin"
-        android:paddingTop="@dimen/small_margin"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@color/colorDarkGray"
+        style="@style/TextStyle"
         tools:text="@string/category_price" />
-
-    <TextView
-        android:id="@+id/book_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:paddingBottom="@dimen/small_margin"
-        android:paddingLeft="@dimen/medium_margin"
-        android:paddingTop="@dimen/small_margin"
-        android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="@color/colorDarkGray"
-        tools:text="@string/category_quantity" />
 
     <Button
         android:id="@+id/button_sale"
+        android:layout_marginLeft="@dimen/button_sale_margin"
+        android:layout_marginRight="@dimen/button_sale_margin"
         android:layout_width="@dimen/button_sale_size"
         android:layout_height="@dimen/button_sale_size"
-        android:gravity="center"
         android:layout_gravity="end"
         android:background="@color/colorAccent"
+        android:gravity="center"
         android:text="@string/button_sale" />
+
+    <TextView
+        android:id="@+id/book_quantity"
+        style="@style/TextStyle"
+        android:layout_gravity="end"
+        tools:text="@string/category_quantity" />
+
 </LinearLayout>

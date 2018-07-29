@@ -3,14 +3,14 @@
     android:id="@+id/scrollview_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/colorLightGray"
+    android:background="@drawable/background_parchment"
     android:paddingBottom="@dimen/small_margin"
     android:paddingTop="@dimen/small_margin">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/medium_margin"
         tools:context=".EditingActivity">
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="1"
-            android:background="@color/colorLightPurple"
+            android:background="@color/colorButtonCallSupplier"
             android:text="@string/button_text_call_supplier"
             android:textColor="@color/colorDarkGray"
             android:textStyle="bold" />
@@ -108,7 +108,7 @@
 
                     <Button
                         android:id="@+id/button_decrease_quantity"
-                        android:background="@color/colorAccent"
+                        android:background="@color/colorButtonQuantity"
                         android:layout_width="@dimen/button_quantity_size"
                         android:layout_height="@dimen/button_quantity_size"
                         android:onClick="decreaseProductQuantity"
@@ -124,7 +124,7 @@
 
                     <Button
                         android:id="@+id/button_increase_quantity"
-                        android:background="@color/colorAccent"
+                        android:background="@color/colorButtonQuantity"
                         android:layout_width="@dimen/button_quantity_size"
                         android:layout_height="@dimen/button_quantity_size"
                         android:onClick="increaseProductQuantity"

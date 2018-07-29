@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import com.example.android.shelfie.data.BookContract;
 
+import java.util.Currency;
+import java.util.Locale;
+
 public class BookCursorAdapter extends CursorAdapter {
 
     public BookCursorAdapter(Context context, Cursor c) {
@@ -40,6 +43,7 @@ public class BookCursorAdapter extends CursorAdapter {
         TextView productNameTextView = (TextView) view.findViewById(R.id.book_product_name);
         TextView priceTextView = (TextView) view.findViewById(R.id.book_price);
         final TextView quantityTextView = (TextView) view.findViewById(R.id.book_quantity);
+        String euro = Currency.getInstance(Locale.FRANCE).getCurrencyCode();
 
         int idColumnIndex = cursor.getColumnIndex(BookContract.BookEntry._ID);
         int authorNameColumnIndex = cursor.getColumnIndex(BookContract.BookEntry.COLUMN_BOOK_AUTHOR);
@@ -77,7 +81,7 @@ public class BookCursorAdapter extends CursorAdapter {
         if (TextUtils.isEmpty(bookPrice)) {
             priceTextView.setText(R.string.activity_shelf_display_default_price);
         } else {
-            priceTextView.setText(bookPrice);
+            priceTextView.setText(bookPrice + " " + euro);
         }
 
         if (TextUtils.isEmpty(bookQuantity)) {
