@@ -475,7 +475,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                deletePet();
+                deleteBook();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -490,7 +490,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         alertDialog.show();
     }
 
-    private void deletePet() {
+    private void deleteBook() {
         if (mCurrentBookUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentBookUri, null, null);
 
