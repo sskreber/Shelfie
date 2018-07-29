@@ -13,11 +13,13 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.android.shelfie.data.BookContract.BookEntry;
 import com.example.android.shelfie.data.BookDbHelper;
@@ -102,12 +104,6 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
         Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
     }
 
-    private void deleteAllDatabaseEntries() {
-        SQLiteDatabase db = mBookDbHelper.getWritableDatabase();
-        dataBaseOldVersion++;
-        mBookDbHelper.onUpgrade(db, dataBaseOldVersion, dataBaseNewVersion);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -115,7 +111,7 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
                 insertDummyBookData();
                 return true;
             case R.id.action_delete_database_entries:
-                deleteAllDatabaseEntries();
+                deleteAllBookEntries();
                 onStart();
                 return true;
         }
@@ -156,5 +152,12 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mBookCursorAdapter.swapCursor(null);
+    }
+
+    private void deleteAllBookEntries() {
+        int rowsDeleted = getContentResolver().delete(BookEntry.CONTENT_URI, null, null);
+        Log.e("ShelfCActivity", rowsDeleted + " rows deleted from book database");
+        Toast.makeText(this, getString(R.string.editor_delete_all_entries_successful),
+                Toast.LENGTH_SHORT).show();
     }
 }
