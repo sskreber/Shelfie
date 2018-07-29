@@ -206,11 +206,11 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         String yearString = mYearEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
 
-        // Check if this is supposed to be a new book & whether the most important required edit fields were left blank
-        if (mCurrentBookUri == null &&
-                TextUtils.isEmpty(authorString) && TextUtils.isEmpty(titleString) &&
-                TextUtils.isEmpty(languageString)) {
-            // Since no fields were modified, return to parent activity without creating a new entry.
+        if (TextUtils.isEmpty(supplierNameString) || TextUtils.isEmpty(authorString) ||
+                TextUtils.isEmpty(titleString) || TextUtils.isEmpty(languageString) ||
+                TextUtils.isEmpty(supplierPhoneNumberString) || TextUtils.isEmpty(quantityString) ||
+                TextUtils.isEmpty(yearString) || TextUtils.isEmpty(priceString)){
+            Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -242,6 +242,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             } else {
                 Toast.makeText(this, getString(R.string.editor_insert_book_successful),
                         Toast.LENGTH_SHORT).show();
+                finish();
             }
         } else {
             // update existing book:
@@ -252,6 +253,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             } else {
                 Toast.makeText(this, getString(R.string.editor_edit_book_successful),
                         Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
@@ -323,7 +325,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveBook();
-                finish();
                 return true;
             case R.id.action_delete:
                 showDeleteConfirmationDialog();
@@ -524,11 +525,11 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     public void decreaseProductQuantity(View view) {
         quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
         if (quantityInt == 0) {
-            Toast.makeText(this, R.string.button_quantity_change_failure_msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.button_quantity_change_failure_msg, Toast.LENGTH_LONG).show();
             return;
         }
         if (quantityInt == 1) {
-            Toast.makeText(this, R.string.button_quantity_change_to_out_of_stock_msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.button_quantity_change_to_out_of_stock_msg, Toast.LENGTH_LONG).show();
             mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_NOT_AVAILABLE);
         }
         quantityInt--;

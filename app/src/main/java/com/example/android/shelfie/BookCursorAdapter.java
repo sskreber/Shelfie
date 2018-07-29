@@ -58,37 +58,17 @@ public class BookCursorAdapter extends CursorAdapter {
         String bookProductName = cursor.getString(productNameColumnIndex);
         String bookPrice = cursor.getString(priceColumnIndex);
         String bookQuantity = cursor.getString(quantityColumnIndex);
-        final int bookQuantityInt = Integer.parseInt(bookQuantity);
+        final Integer bookQuantityInt = Integer.parseInt(bookQuantity);
 
-        if (TextUtils.isEmpty(bookAuthor)) {
-            bookAuthorTextView.setText(R.string.activity_shelf_display_unknown_author);
-        } else {
             bookAuthorTextView.setText(bookAuthor);
-        }
 
-        if (TextUtils.isEmpty(bookTitle)) {
-            bookTitleTextView.setText(R.string.activity_shelf_display_unknown_title);
-        } else {
             bookTitleTextView.setText(bookTitle);
-        }
 
-        if (TextUtils.isEmpty(bookProductName)) {
-            productNameTextView.setText(R.string.activity_shelf_display_unknown_product_name);
-        } else {
             productNameTextView.setText(bookProductName);
-        }
 
-        if (TextUtils.isEmpty(bookPrice)) {
-            priceTextView.setText(R.string.activity_shelf_display_default_price);
-        } else {
             priceTextView.setText(bookPrice + " " + euro);
-        }
 
-        if (TextUtils.isEmpty(bookQuantity)) {
-            quantityTextView.setText(R.string.activity_shelf_display_default_quantity);
-        } else {
             quantityTextView.setText(bookQuantity);
-        }
 
         listViewItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +84,12 @@ public class BookCursorAdapter extends CursorAdapter {
         saleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                int bookQuantityForButtonPress = bookQuantityInt;
+                int bookQuantityForButtonPress = 0;
+                if (bookQuantityInt == null) {
+                    return;
+                } else {
+                    bookQuantityForButtonPress = bookQuantityInt;
+                }
 
                 if (bookQuantityForButtonPress == 0) {
                     Toast.makeText(context, R.string.button_sale_item_unavailable_msg, Toast.LENGTH_SHORT).show();

@@ -8,6 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.android.shelfie.EditingActivity;
+import com.example.android.shelfie.R;
 
 public class BookProvider extends ContentProvider {
 
@@ -77,8 +81,6 @@ public class BookProvider extends ContentProvider {
 
 
     private Uri insertBook(Uri uri, ContentValues values) {
-        // sanity checks for String variables
-
         validateInputData(values);
 
         SQLiteDatabase database = mBookDbHelper.getWritableDatabase();
@@ -171,9 +173,7 @@ public class BookProvider extends ContentProvider {
         }
     }
 
-    /**
-     * Updates the data at the given selection and selection arguments, with the new ContentValues.
-     */
+
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection,
                       String[] selectionArgs) {
@@ -182,15 +182,12 @@ public class BookProvider extends ContentProvider {
             case BOOKS:
                 return updateBook(uri, contentValues, selection, selectionArgs);
             case BOOK_ID:
-                // For the BOOK_ID code, extract out the ID from the URI,
-                // so we know which row to update. Selection will be "_id=?" and selection
-                // arguments will be a String array containing the actual ID.
                 selection = BookContract.BookEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
                 return updateBook(uri, contentValues, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Update is not supported for " + uri);
+                throw new IllegalArgumentException("Update not supported for " + uri);
         }
 
     }

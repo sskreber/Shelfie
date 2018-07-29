@@ -78,7 +78,16 @@
     <string name="button_sale">Sale</string>
     <string name="button_sale_failure_msg">Failure to decrease product quantity</string>
     <string name="button_sale_item_unavailable_msg">Item already out of stock</string>
-
     <string name="euro">\u20ac</string>
 
+    <string name="toast_warning_invalid_author">Book requires a valid author</string>
+    <string name="toast_warning_invalid_title">Book requires a valid title</string>
+    <string name="toast_warning_invalid_language">Book requires its language to be set</string>
+    <string name="toast_warning_invalid_quantity">Book requires a valid quantity</string>
+    <string name="toast_warning_invalid_publication_year">Book requires a valid publication year</string>
+
+    <string name="toast_warning_invalid_price">Book requires a valid price</string>
+    <string name="toast_warning_invalid_product_name">Book requires a valid product name</string>
+    <string name="toast_warning_invalid_state">Book requires its state to be set</string>
+    <string name="toast_warning_invalid_availability">Book requires its availability to be set</string>
 </resources>
