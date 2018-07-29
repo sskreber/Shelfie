@@ -1,11 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-
-
     <dimen name="small_margin">4dp</dimen>
     <dimen name="button_quantity_size">38dp</dimen>
+    <dimen name="button_sale_size">55dp</dimen>
+    <dimen name="button_sale_margin">20dp</dimen>
     <dimen name="close_to_medium_margin">4dp</dimen>
     <dimen name="medium_margin">16dp</dimen>
     <dimen name="big_and_spinner_margin">46dp</dimen>
     <dimen name="design_navigation_icon_size" tools:override="true">10dp</dimen>
 </resources>
-

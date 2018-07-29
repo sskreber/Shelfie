@@ -59,8 +59,8 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ShelfActivity.this, EditingActivity.class);
-                Uri currentPetUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
-                intent.setData(currentPetUri);
+                Uri currentBookUri = ContentUris.withAppendedId(BookEntry.CONTENT_URI, id);
+                intent.setData(currentBookUri);
                 startActivity(intent);
             }
         });

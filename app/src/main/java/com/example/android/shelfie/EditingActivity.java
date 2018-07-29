@@ -534,7 +534,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         quantityInt--;
         mQuantityEditText.setText(String.valueOf(quantityInt));
     }
-    
+
     public void increaseProductQuantity(View view) {
         quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
         quantityInt++;

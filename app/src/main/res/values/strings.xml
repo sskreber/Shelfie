@@ -17,6 +17,7 @@
     <string name="category_availability">Availability</string>
     <string name="category_publication_year">Publication year</string>
     <string name="category_price">Price</string>
+    <string name="category_quantity">Quantity</string>
 
     <string name="hint_book_quantity">Quantity</string>
     <string name="hint_supplier_name">Name</string>
@@ -65,11 +66,19 @@
 
     <string name="activity_shelf_display_unknown_author">Unknown author</string>
     <string name="activity_shelf_display_unknown_title">Unknown title</string>
+    <string name="activity_shelf_display_unknown_product_name">Unknown category</string>
+    <string name="activity_shelf_display_default_price">0</string>
+    <string name="activity_shelf_display_default_quantity">0</string>
 
     <string name="button_text_call_supplier">Call supplier</string>
     <string name="button_text_decrease_quantity">-</string>
     <string name="button_text_increase_quantity">+</string>
     <string name="button_quantity_change_failure_msg">Cannot be less than 0!</string>
     <string name="button_quantity_change_to_out_of_stock_msg">Item became out of stock</string>
+    <string name="button_sale">Sale</string>
+    <string name="button_sale_failure_msg">Failure to decrease product quantity</string>
+    <string name="button_sale_item_unavailable_msg">Item already out of stock</string>
+
+    <string name="pound">£</string>
 
 </resources>
