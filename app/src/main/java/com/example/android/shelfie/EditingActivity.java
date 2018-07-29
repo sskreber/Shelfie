@@ -172,7 +172,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         });
     }
 
-    private void getInputBookEntry() {
+    private void saveBook() {
         String supplierNameString = mSupplierNameEditText.getText().toString().trim();
         int supplierPhoneNumberInt = Integer.parseInt(mSupplierPhoneNumberEditText.getText().toString());
 
@@ -184,12 +184,11 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         int yearInt = Integer.parseInt(mYearEditText.getText().toString().trim());
         int priceInt = Integer.parseInt(mPriceEditText.getText().toString().trim());
 
-        // Check if this is supposed to be a new pet
-        // and check if all the fields in the editor are blank
+        // Check if this is supposed to be a new pet & whether the most important required edit fields were left blank
         if (mCurrentBookUri == null &&
                 TextUtils.isEmpty(authorString) && TextUtils.isEmpty(titleString) &&
                 TextUtils.isEmpty(languageString)) {
-            // Since no fields were modified, we can return early without creating a new pet.
+            // Since no fields were modified, we can return early without creating a new entry.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
         }
@@ -207,14 +206,27 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         values.put(BookEntry.COLUMN_BOOK_STATE, mState);
         values.put(BookEntry.COLUMN_BOOK_AVAILABILITY, mAvailability);
 
-        Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
-
-        if (newUri == null) {
-            Toast.makeText(this, getString(R.string.editor_insert_pet_failure),
-                    Toast.LENGTH_SHORT).show();
+        // Check if we're in edit or save new book mode
+        if (mCurrentBookUri == null) {
+            // save new book:
+            Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+            if (newUri == null) {
+                Toast.makeText(this, getString(R.string.editor_insert_book_failure),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_insert_book_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(this, getString(R.string.editor_insert_pet_successful),
-                    Toast.LENGTH_SHORT).show();
+            // update existing book:
+            int rowsAffected = getContentResolver().update(mCurrentBookUri, values, null, null);
+            if (rowsAffected == 0) {
+                Toast.makeText(this, getString(R.string.editor_insert_book_failure),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_insert_book_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -228,7 +240,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                getInputBookEntry();
+                saveBook();
                 finish();
                 return true;
             case R.id.action_delete:

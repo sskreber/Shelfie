@@ -41,8 +41,8 @@
     <string name="availability_in_storage">In storage</string>
     <string name="availability_in_store">In store</string>
 
-    <string name="editor_insert_pet_successful">Book successfully saved</string>
-    <string name="editor_insert_pet_failure">Error saving pet</string>
+    <string name="editor_insert_book_successful">Book successfully saved</string>
+    <string name="editor_insert_book_failure">Error saving pet</string>
 
     <string name="listview_book_author_placeholder">Eugene Labiche</string>
     <string name="listview_book_title_placeholder">Stage plays I.</string>
