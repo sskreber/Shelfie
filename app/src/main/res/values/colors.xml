@@ -3,11 +3,7 @@
     <color name="colorPrimary">#004D40</color>
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#69F0AE</color>
-    <color name="colorLightGray">#FAFAFA</color>
     <color name="colorDarkGray">#424242</color>
-    <color name="colorLightPurple">#C5CAE9</color>
-    <color name="editorColorPrimary">#2D3640</color>
-    <color name="editorColorPrimaryDark">#394450</color>
     <color name="colorEditTextHint">#F9FBE7</color>
     <color name="colorButtonQuantity">#FF9100</color>
     <color name="colorButtonCallSupplier">#FF9100</color>

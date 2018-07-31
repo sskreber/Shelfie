@@ -12,19 +12,15 @@ import android.util.Log;
 public class BookProvider extends ContentProvider {
 
     private static final int BOOKS = 100;
-
     private static final int BOOK_ID = 101;
-
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+    public static final String LOG_TAG = BookProvider.class.getSimpleName();
+    private BookDbHelper mBookDbHelper;
 
     static {
         sUriMatcher.addURI(BookContract.CONTENT_AUTHORITY, BookContract.PATH_BOOKS, BOOKS);
         sUriMatcher.addURI(BookContract.CONTENT_AUTHORITY, BookContract.PATH_BOOKS + "/#", BOOK_ID);
     }
-
-    public static final String LOG_TAG = BookProvider.class.getSimpleName();
-
-    private BookDbHelper mBookDbHelper;
 
     @Override
     public boolean onCreate() {
@@ -36,10 +32,9 @@ public class BookProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
         SQLiteDatabase database = mBookDbHelper.getReadableDatabase();
-
         Cursor cursor;
-
         int match = sUriMatcher.match(uri);
+
         switch (match) {
             case BOOKS:
                 cursor = database.query(BookContract.BookEntry.TABLE_NAME, projection, selection, selectionArgs,
@@ -178,7 +173,6 @@ public class BookProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Update not supported for " + uri);
         }
-
     }
 
     private int updateBook(Uri uri, ContentValues values, String selection, String[] selectionArgs) {

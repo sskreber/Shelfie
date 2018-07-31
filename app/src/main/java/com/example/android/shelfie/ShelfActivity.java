@@ -139,7 +139,7 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private void deleteAllBookEntries() {
         int rowsDeleted = getContentResolver().delete(BookEntry.CONTENT_URI, null, null);
-        Log.e(LOG_TAG, rowsDeleted + " " + R.string.log_tag_n_rows_deleted_from_db);
+        Log.e(LOG_TAG, rowsDeleted + " " + "rows_deleted_from_db");
 
         Toast.makeText(this, getString(R.string.editor_delete_all_entries_successful),
                 Toast.LENGTH_SHORT).show();

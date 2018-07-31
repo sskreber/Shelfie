@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.android.shelfie.R;
 import com.example.android.shelfie.data.BookContract.BookEntry;
 
 public class BookDbHelper extends SQLiteOpenHelper {
@@ -40,7 +41,7 @@ public class BookDbHelper extends SQLiteOpenHelper {
                 + BookEntry.COLUMN_BOOK_AVAILABILITY + " INTEGER NOT NULL DEFAULT 0); ";
 
         db.execSQL(SQL_CREATE_BOOKS_TABLE);
-        Log.e(LOG_TAG, "Shelfie db created: " + SQL_CREATE_BOOKS_TABLE);
+        Log.e(LOG_TAG, "Shelfie db created" + SQL_CREATE_BOOKS_TABLE);
     }
 
     @Override

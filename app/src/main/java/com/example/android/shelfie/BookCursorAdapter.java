@@ -93,6 +93,10 @@ public class BookCursorAdapter extends CursorAdapter {
                     ContentValues values = new ContentValues();
                     values.put(BookContract.BookEntry.COLUMN_BOOK_QUANTITY, newQuantityString);
 
+                    if (bookQuantityForButtonPress == 0) {
+                        values.put(BookContract.BookEntry.COLUMN_BOOK_AVAILABILITY, BookContract.BookEntry.AVAILABILITY_NOT_AVAILABLE);
+                    }
+
                     Uri currentInventoryUri = ContentUris.withAppendedId(BookContract.BookEntry.CONTENT_URI, itemId);
                     int rowsAffected = context.getContentResolver().update(currentInventoryUri, values, null, null);
 

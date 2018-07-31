@@ -269,7 +269,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         builder.setPositiveButton(R.string.unsaved_changes_discard, discardButtonClickListener);
         builder.setNegativeButton(R.string.unsaved_changes_stay, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // Is user chooses "Keep editing" button:
+                // Is user chooses the "Keep editing" button:
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -291,7 +291,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // If user chooses "Discard" button:
+                        // If user chooses the "Discard" button:
                         finish();
                     }
                 };
@@ -334,7 +334,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // If user clicks "Discard" button:
+                                // If user clicks the "Discard" button:
                                 NavUtils.navigateUpFromSameTask(EditingActivity.this);
                             }
                         };
@@ -521,6 +521,9 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     public void increaseProductQuantity(View view) {
         quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
+        if (mAvailability == BookEntry.AVAILABILITY_NOT_AVAILABLE) {
+            mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_IN_STORAGE);
+        }
         quantityInt++;
         mQuantityEditText.setText(String.valueOf(quantityInt));
     }
