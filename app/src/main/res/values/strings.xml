@@ -53,7 +53,7 @@
     <string name="empty_view_empty_inventory_text">Not a lot of books here&#8230;</string>
     <string name="empty_view_prompt_text">Add to the inventory!</string>
 
-    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit entry?</string>
     <string name="unsaved_changes_discard">Discard</string>
     <string name="unsaved_changes_stay">Stay</string>
 
@@ -92,5 +92,9 @@
     <string name="toast_warning_invalid_state">Book requires its state to be set</string>
     <string name="toast_warning_invalid_availability">Book requires its availability to be set</string>
 
+    <string name="toast_warning_null_value_in_entry">Please fill in all the fields</string>
+
     <string name="log_tag_db_created">db created</string>
+    <string name="log_tag_n_rows_deleted_from_db">rows deleted from book database</string>
+
 </resources>

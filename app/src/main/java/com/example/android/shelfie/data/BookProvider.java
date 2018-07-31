@@ -8,10 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.example.android.shelfie.EditingActivity;
-import com.example.android.shelfie.R;
 
 public class BookProvider extends ContentProvider {
 
@@ -167,7 +163,6 @@ public class BookProvider extends ContentProvider {
         }
     }
 
-
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection,
                       String[] selectionArgs) {
@@ -222,16 +217,12 @@ public class BookProvider extends ContentProvider {
 
         SQLiteDatabase database = mBookDbHelper.getWritableDatabase();
 
-        // Perform the update on the database and get the number of rows affected
         int rowsUpdated = database.update(BookContract.BookEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        // If 1 or more rows were updated, then notify all listeners that the data at the
-        // given URI has changed
         if (rowsUpdated != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        // Returns the number of database rows affected by the update statement
         return rowsUpdated;
     }
 
@@ -263,9 +254,6 @@ public class BookProvider extends ContentProvider {
         }
     }
 
-    /**
-     * Returns the MIME type of data for the content URI.
-     */
     @Override
     public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri);

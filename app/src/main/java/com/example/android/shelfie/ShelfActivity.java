@@ -4,14 +4,12 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,18 +20,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.shelfie.data.BookContract.BookEntry;
-import com.example.android.shelfie.data.BookDbHelper;
 import com.facebook.stetho.Stetho;
 
 public class ShelfActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     protected static final int BOOK_LOADER = 0;
     BookCursorAdapter mBookCursorAdapter;
-
-    BookDbHelper mBookDbHelper;
-    private int dataBaseOldVersion = 1;
-    private int dataBaseNewVersion = dataBaseOldVersion + 1;
     private ListView bookListView;
+    public static final String LOG_TAG = ShelfActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +48,6 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
         mBookCursorAdapter = new BookCursorAdapter(this, null);
         bookListView.setAdapter(mBookCursorAdapter);
 
-        // If list item clicked - activity displaying given entry's info will be launched
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -64,8 +57,6 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
                 startActivity(intent);
             }
         });
-
-        // Initialize loader
         getSupportLoaderManager().initLoader(BOOK_LOADER, null, this);
     }
 
@@ -87,7 +78,6 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
         values.put(BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER, 3406306891690L);
         values.put(BookEntry.COLUMN_BOOK_PRODUCT_NAME, BookEntry.PRODUCT_NAME_STANDARD_BOOK);
         values.put(BookEntry.COLUMN_BOOK_QUANTITY, 1);
-
         values.put(BookEntry.COLUMN_BOOK_AUTHOR, "Labiche");
         values.put(BookEntry.COLUMN_BOOK_TITLE, "Plays I.");
         values.put(BookEntry.COLUMN_BOOK_PUBLICATION_YEAR, 1989);
@@ -118,7 +108,6 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
         String[] projection = {BookEntry._ID,
                 BookEntry.COLUMN_BOOK_SUPPLIER_NAME,
                 BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER,
-
                 BookEntry.COLUMN_BOOK_PRODUCT_NAME,
                 BookEntry.COLUMN_BOOK_QUANTITY,
                 BookEntry.COLUMN_BOOK_AUTHOR,
@@ -140,7 +129,6 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        // update CursorAdapter with new Cursor & the data it contains
         mBookCursorAdapter.swapCursor(data);
     }
 
@@ -151,7 +139,8 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private void deleteAllBookEntries() {
         int rowsDeleted = getContentResolver().delete(BookEntry.CONTENT_URI, null, null);
-        Log.e("ShelfCActivity", rowsDeleted + " rows deleted from book database");
+        Log.e(LOG_TAG, rowsDeleted + " " + R.string.log_tag_n_rows_deleted_from_db);
+
         Toast.makeText(this, getString(R.string.editor_delete_all_entries_successful),
                 Toast.LENGTH_SHORT).show();
     }

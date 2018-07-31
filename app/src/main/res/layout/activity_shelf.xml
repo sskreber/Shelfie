@@ -45,14 +45,15 @@
             android:textAppearance="?android:textAppearanceSmall" />
     </RelativeLayout>
 
-    <!--Plus icon created by Smashicons at www.flaticon.com -->
+    <!--Plus icon created by Pixel Buddha at www.flaticon.com -->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/medium_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/medium_margin"
-        android:src="@drawable/ic_plus" />
+        android:src="@drawable/ic_plus_round" />
 
 </RelativeLayout>

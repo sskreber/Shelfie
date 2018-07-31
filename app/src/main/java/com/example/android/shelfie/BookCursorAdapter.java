@@ -6,15 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.renderscript.Sampler;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +23,7 @@ import java.util.Locale;
 public class BookCursorAdapter extends CursorAdapter {
 
     public BookCursorAdapter(Context context, Cursor c) {
-        super(context, c, 0 /* flags */);
+        super(context, c, 0);
     }
 
     @Override
@@ -60,15 +57,11 @@ public class BookCursorAdapter extends CursorAdapter {
         String bookQuantity = cursor.getString(quantityColumnIndex);
         final Integer bookQuantityInt = Integer.parseInt(bookQuantity);
 
-            bookAuthorTextView.setText(bookAuthor);
-
-            bookTitleTextView.setText(bookTitle);
-
-            productNameTextView.setText(bookProductName);
-
-            priceTextView.setText(bookPrice + " " + euro);
-
-            quantityTextView.setText(bookQuantity);
+        bookAuthorTextView.setText(bookAuthor);
+        bookTitleTextView.setText(bookTitle);
+        productNameTextView.setText(bookProductName);
+        priceTextView.setText(bookPrice + " " + euro);
+        quantityTextView.setText(bookQuantity);
 
         listViewItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,4 +106,3 @@ public class BookCursorAdapter extends CursorAdapter {
         });
     }
 }
-

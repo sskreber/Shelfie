@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
     <color name="colorPrimary">#004D40</color>
-    <color name="colorPrimaryDark">#1A237E</color>
+    <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#69F0AE</color>
     <color name="colorLightGray">#FAFAFA</color>
     <color name="colorDarkGray">#424242</color>
@@ -14,5 +13,4 @@
     <color name="colorButtonCallSupplier">#FF9100</color>
     <color name="colorTextViewOnBrownBackground">#B9F6CA</color>
     <color name="colorDarkGreen">#B9F6CA</color>
-
 </resources>

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
@@ -20,13 +19,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.shelfie.data.BookContract.BookEntry;
-
 
 public class EditingActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -74,7 +71,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             invalidateOptionsMenu();
         } else {
             setTitle(getResources().getString(R.string.editing_activity_edit_existing_new_book));
-            // Initialize loader
             getSupportLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
         }
 
@@ -133,7 +129,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mProductName = BookEntry.PRODUCT_NAME_STANDARD_BOOK; // Unknown
+                mProductName = BookEntry.PRODUCT_NAME_STANDARD_BOOK;
             }
         });
     }
@@ -209,8 +205,8 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         if (TextUtils.isEmpty(supplierNameString) || TextUtils.isEmpty(authorString) ||
                 TextUtils.isEmpty(titleString) || TextUtils.isEmpty(languageString) ||
                 TextUtils.isEmpty(supplierPhoneNumberString) || TextUtils.isEmpty(quantityString) ||
-                TextUtils.isEmpty(yearString) || TextUtils.isEmpty(priceString)){
-            Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_SHORT).show();
+                TextUtils.isEmpty(yearString) || TextUtils.isEmpty(priceString)) {
+            Toast.makeText(this, R.string.toast_warning_null_value_in_entry, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -234,7 +230,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
         // Check if we're in edit or save new book mode
         if (mCurrentBookUri == null) {
-            // save new book:
+            // Save new book:
             Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
             if (newUri == null) {
                 Toast.makeText(this, getString(R.string.editor_insert_book_failure),
@@ -273,7 +269,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         builder.setPositiveButton(R.string.unsaved_changes_discard, discardButtonClickListener);
         builder.setNegativeButton(R.string.unsaved_changes_stay, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked "Keep editing" button - dismiss dialog, continue editing.
+                // Is user chooses "Keep editing" button:
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -286,18 +282,16 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onBackPressed() {
-        // If the entry hasn't changed, handle back button press:
         if (!mBookHasChanged) {
             super.onBackPressed();
             return;
         }
 
-        // if entry has changed:
         DialogInterface.OnClickListener discardButtonClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // If user clicks "Discard" button:
+                        // If user chooses "Discard" button:
                         finish();
                     }
                 };
@@ -330,18 +324,17 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                 showDeleteConfirmationDialog();
                 return true;
             case android.R.id.home:
-                // If the book entry hasn't changed, go back to parent activity
                 if (!mBookHasChanged) {
                     NavUtils.navigateUpFromSameTask(EditingActivity.this);
                     return true;
                 }
 
-                // Dialog to warn user about unsaved changes
+                // Dialog to warn user about their unsaved changes:
                 DialogInterface.OnClickListener discardButtonClickListener =
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                // User clicked "Discard" button: navigate to parent activity.
+                                // If user clicks "Discard" button:
                                 NavUtils.navigateUpFromSameTask(EditingActivity.this);
                             }
                         };
@@ -353,11 +346,9 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // A projection containing all columns from the table
         String[] projection = {BookEntry._ID,
                 BookEntry.COLUMN_BOOK_SUPPLIER_NAME,
                 BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER,
-
                 BookEntry.COLUMN_BOOK_PRODUCT_NAME,
                 BookEntry.COLUMN_BOOK_QUANTITY,
                 BookEntry.COLUMN_BOOK_AUTHOR,
@@ -369,7 +360,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                 BookEntry.COLUMN_BOOK_AVAILABILITY,
         };
 
-        // Loader executes ContentProvider's query method on a background thread
         return new CursorLoader(this,
                 mCurrentBookUri,
                 projection,
@@ -380,7 +370,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        // Move to the first (and only) row of the cursor (there's only one chosen book entry now), read its data
 
         if (cursor.moveToFirst()) {
             int supplierNameColumnIndex = cursor.getColumnIndex(BookEntry.COLUMN_BOOK_SUPPLIER_NAME);
@@ -416,8 +405,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
             mYearEditText.setText(Integer.toString(currentYear));
             mLanguageEditText.setText(currentLanguage);
             mPriceEditText.setText(Integer.toString(currentPrice));
-
-            // Set dropdown spinners to existing entry's attribute
 
             switch (currentProductName) {
                 case BookEntry.PRODUCT_NAME_KINDLE_BOOK:
@@ -462,7 +449,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Clear input fields:
         mSupplierNameEditText.setText("");
         mSupplierPhoneNumberEditText.setText("");
         mQuantityEditText.setText("");
@@ -471,7 +457,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         mYearEditText.setText("");
         mLanguageEditText.setText("");
         mPriceEditText.setText("");
-
         mProductNameSpinner.setSelection(2);
         mStateSpinner.setSelection(BookEntry.STATE_UNKNOWN);
         mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_NOT_AVAILABLE);
@@ -520,8 +505,6 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         }
     }
 
-    // Product quantity can't be less than 0.
-    // If quantity was > 0 but becomes 0 after decrease, its availability spinner will be set to NOT AVAILABLE.
     public void decreaseProductQuantity(View view) {
         quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
         if (quantityInt == 0) {
