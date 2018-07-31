@@ -91,4 +91,6 @@
     <string name="toast_warning_invalid_product_name">Book requires a valid product name</string>
     <string name="toast_warning_invalid_state">Book requires its state to be set</string>
     <string name="toast_warning_invalid_availability">Book requires its availability to be set</string>
+
+    <string name="log_tag_db_created">db created</string>
 </resources>

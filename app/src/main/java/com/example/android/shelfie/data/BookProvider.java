@@ -28,7 +28,6 @@ public class BookProvider extends ContentProvider {
 
     public static final String LOG_TAG = BookProvider.class.getSimpleName();
 
-    // Database helper object
     private BookDbHelper mBookDbHelper;
 
     @Override
@@ -61,8 +60,6 @@ public class BookProvider extends ContentProvider {
                 throw new IllegalArgumentException("Cannot query unknown URI " + uri);
         }
 
-        // set notification URI on the cursor so we know what content URI the cursor was created for.
-        // if data at this URI changes, we'll know we need to update the cursor.
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
@@ -87,11 +84,9 @@ public class BookProvider extends ContentProvider {
         long id = database.insert(BookContract.BookEntry.TABLE_NAME, null, values);
 
         if (id == -1) {
-            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            Log.e(LOG_TAG, "Failure inserting row for " + uri);
             return null;
         }
-
-        // notify all listeners that the data has changed for the ...books/books book content uri
         getContext().getContentResolver().notifyChange(uri, null);
 
         return ContentUris.withAppendedId(uri, id);
@@ -137,7 +132,6 @@ public class BookProvider extends ContentProvider {
         }
     }
 
-    // app doesn't accept books dating back earlier than 1600
     private void validateInputPublicationYear(ContentValues values) {
         Integer publicationYear = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_PUBLICATION_YEAR);
         if (publicationYear != null && publicationYear != 0 && publicationYear <= 1600) {

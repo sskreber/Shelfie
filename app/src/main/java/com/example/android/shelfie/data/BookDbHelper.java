@@ -14,6 +14,8 @@ public class BookDbHelper extends SQLiteOpenHelper {
 
     protected static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + BookEntry.TABLE_NAME + ";";
 
+    public static final String LOG_TAG = BookDbHelper.class.getSimpleName();
+
     public BookDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -38,7 +40,7 @@ public class BookDbHelper extends SQLiteOpenHelper {
                 + BookEntry.COLUMN_BOOK_AVAILABILITY + " INTEGER NOT NULL DEFAULT 0); ";
 
         db.execSQL(SQL_CREATE_BOOKS_TABLE);
-        Log.e("Db created", SQL_CREATE_BOOKS_TABLE);
+        Log.e(LOG_TAG, "Shelfie db created: " + SQL_CREATE_BOOKS_TABLE);
     }
 
     @Override
