@@ -24,10 +24,10 @@ import com.facebook.stetho.Stetho;
 
 public class ShelfActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final String LOG_TAG = ShelfActivity.class.getSimpleName();
     protected static final int BOOK_LOADER = 0;
     BookCursorAdapter mBookCursorAdapter;
     private ListView bookListView;
-    public static final String LOG_TAG = ShelfActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class ShelfActivity extends AppCompatActivity implements LoaderManager.Lo
         values.put(BookEntry.COLUMN_BOOK_STATE, BookEntry.STATE_USED);
         values.put(BookEntry.COLUMN_BOOK_AVAILABILITY, BookEntry.AVAILABILITY_IN_STORE);
 
-        Uri newUri = getContentResolver().insert(BookEntry.CONTENT_URI, values);
+        getContentResolver().insert(BookEntry.CONTENT_URI, values);
     }
 
     @Override

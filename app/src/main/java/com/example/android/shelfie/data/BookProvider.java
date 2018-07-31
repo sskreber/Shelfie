@@ -11,16 +11,17 @@ import android.util.Log;
 
 public class BookProvider extends ContentProvider {
 
+    public static final String LOG_TAG = BookProvider.class.getSimpleName();
     private static final int BOOKS = 100;
     private static final int BOOK_ID = 101;
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    public static final String LOG_TAG = BookProvider.class.getSimpleName();
-    private BookDbHelper mBookDbHelper;
 
     static {
         sUriMatcher.addURI(BookContract.CONTENT_AUTHORITY, BookContract.PATH_BOOKS, BOOKS);
         sUriMatcher.addURI(BookContract.CONTENT_AUTHORITY, BookContract.PATH_BOOKS + "/#", BOOK_ID);
     }
+
+    private BookDbHelper mBookDbHelper;
 
     @Override
     public boolean onCreate() {

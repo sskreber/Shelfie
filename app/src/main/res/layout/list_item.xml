@@ -40,11 +40,11 @@
 
     <Button
         android:id="@+id/button_sale"
-        android:layout_marginLeft="@dimen/button_sale_margin"
-        android:layout_marginRight="@dimen/button_sale_margin"
         android:layout_width="@dimen/button_sale_size"
         android:layout_height="@dimen/button_sale_size"
         android:layout_gravity="end"
+        android:layout_marginLeft="@dimen/button_sale_margin"
+        android:layout_marginRight="@dimen/button_sale_margin"
         android:background="@color/colorAccent"
         android:gravity="center"
         android:text="@string/button_sale" />

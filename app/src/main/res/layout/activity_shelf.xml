@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/small_margin"
     android:background="@drawable/background_parchment"
+    android:padding="@dimen/small_margin"
     tools:context=".ShelfActivity">
 
     <ListView
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_empty_bookshelf"/>
+            android:src="@drawable/ic_empty_bookshelf" />
 
         <!--Bookshelf icon created by Pixel Buddha at www.flaticon.com -->
         <TextView
@@ -38,8 +38,8 @@
         <TextView
             android:id="@+id/empty_subtitle_text"
             style="@style/EmptyTextViewStyle"
-            android:fontFamily="sans-serif-medium"
             android:layout_below="@+id/empty_title_text"
+            android:fontFamily="sans-serif-medium"
             android:paddingTop="@dimen/close_to_medium_margin"
             android:text="@string/empty_view_prompt_text"
             android:textAppearance="?android:textAppearanceSmall" />
@@ -50,10 +50,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/medium_margin"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/medium_margin"
+        android:paddingBottom="@dimen/medium_margin"
         android:src="@drawable/ic_plus_round" />
 
 </RelativeLayout>

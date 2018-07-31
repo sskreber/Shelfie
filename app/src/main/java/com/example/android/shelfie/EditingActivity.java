@@ -28,7 +28,8 @@ import com.example.android.shelfie.data.BookContract.BookEntry;
 public class EditingActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int EXISTING_BOOK_LOADER = 0;
-
+    int quantityInt = 0;
+    Uri mCurrentBookUri;
     private EditText mSupplierNameEditText;
     private EditText mSupplierPhoneNumberEditText;
     private Spinner mProductNameSpinner;
@@ -43,11 +44,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     private int mState = 0;
     private Spinner mAvailabilitySpinner;
     private int mAvailability = 0;
-
     private String mSupplierPhoneNumber = "";
-    int quantityInt = 0;
-
-    Uri mCurrentBookUri;
     private boolean mBookHasChanged = false;
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
@@ -241,7 +238,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
                 finish();
             }
         } else {
-            // update existing book:
+            // Update existing book:
             int rowsAffected = getContentResolver().update(mCurrentBookUri, values, null, null);
             if (rowsAffected == 0) {
                 Toast.makeText(this, getString(R.string.editor_edit_book_failure),

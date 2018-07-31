@@ -5,17 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.android.shelfie.R;
 import com.example.android.shelfie.data.BookContract.BookEntry;
 
 public class BookDbHelper extends SQLiteOpenHelper {
 
+    public static final String LOG_TAG = BookDbHelper.class.getSimpleName();
     protected static final String DATABASE_NAME = "shelfie.db";
     protected static final int DATABASE_VERSION = 1;
-
     protected static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + BookEntry.TABLE_NAME + ";";
-
-    public static final String LOG_TAG = BookDbHelper.class.getSimpleName();
 
     public BookDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,18 +22,16 @@ public class BookDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String SQL_CREATE_BOOKS_TABLE = "CREATE TABLE " + BookEntry.TABLE_NAME + " ("
                 + BookEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+
                 + BookEntry.COLUMN_BOOK_SUPPLIER_NAME + " TEXT, "
                 + BookEntry.COLUMN_BOOK_SUPPLIER_PHONE_NUMBER + " INTEGER, "
-
                 + BookEntry.COLUMN_BOOK_PRODUCT_NAME + " TEXT, "
                 + BookEntry.COLUMN_BOOK_QUANTITY + " INTEGER NOT NULL DEFAULT 1, "
-
                 + BookEntry.COLUMN_BOOK_AUTHOR + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_TITLE + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_PUBLICATION_YEAR + " INTEGER, "
                 + BookEntry.COLUMN_BOOK_LANGUAGE + " TEXT NOT NULL, "
                 + BookEntry.COLUMN_BOOK_PRICE + " INTEGER, "
-
                 + BookEntry.COLUMN_BOOK_STATE + " INTEGER, "
                 + BookEntry.COLUMN_BOOK_AVAILABILITY + " INTEGER NOT NULL DEFAULT 0); ";
 

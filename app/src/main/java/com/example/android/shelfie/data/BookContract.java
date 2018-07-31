@@ -6,12 +6,11 @@ import android.provider.BaseColumns;
 
 public final class BookContract {
 
-    public BookContract() {
-    }
-
     public static final String CONTENT_AUTHORITY = "com.example.android.shelfie";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_BOOKS = "books";
+    public BookContract() {
+    }
 
     public static abstract class BookEntry implements BaseColumns {
 
@@ -29,10 +28,8 @@ public final class BookContract {
 
         public static final String COLUMN_BOOK_SUPPLIER_NAME = "supplier_name";
         public static final String COLUMN_BOOK_SUPPLIER_PHONE_NUMBER = "supplier_phone_number";
-
         public static final String COLUMN_BOOK_PRODUCT_NAME = "product_name";
         public static final String COLUMN_BOOK_QUANTITY = "quantity";
-
         public static final String COLUMN_BOOK_AUTHOR = "author";
         public static final String COLUMN_BOOK_TITLE = "title";
         public static final String COLUMN_BOOK_PUBLICATION_YEAR = "publication_year";
