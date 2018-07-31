@@ -13,4 +13,6 @@
     <color name="colorButtonQuantity">#FF9100</color>
     <color name="colorButtonCallSupplier">#FF9100</color>
     <color name="colorTextViewOnBrownBackground">#B9F6CA</color>
+    <color name="colorDarkGreen">#B9F6CA</color>
+
 </resources>

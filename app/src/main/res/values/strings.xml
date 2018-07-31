@@ -50,8 +50,8 @@
     <string name="listview_book_author_placeholder">Eugene Labiche</string>
     <string name="listview_book_title_placeholder">Stage plays I.</string>
 
-    <string name="empty_view_title_text">Not a lot of books here&#8230;</string>
-    <string name="empty_view_subtitle_text">Add to the inventory!</string>
+    <string name="empty_view_empty_inventory_text">Not a lot of books here&#8230;</string>
+    <string name="empty_view_prompt_text">Add to the inventory!</string>
 
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
     <string name="unsaved_changes_discard">Discard</string>
@@ -78,6 +78,7 @@
     <string name="button_sale">Sale</string>
     <string name="button_sale_failure_msg">Failure to decrease product quantity</string>
     <string name="button_sale_item_unavailable_msg">Item already out of stock</string>
+
     <string name="euro">\u20ac</string>
 
     <string name="toast_warning_invalid_author">Book requires a valid author</string>

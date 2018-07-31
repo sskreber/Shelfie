@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Empty view for the list -->
     <RelativeLayout
         android:id="@+id/empty_view"
         android:layout_width="wrap_content"
@@ -29,28 +28,22 @@
         <!--Bookshelf icon created by Pixel Buddha at www.flaticon.com -->
         <TextView
             android:id="@+id/empty_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/EmptyTextViewStyle"
             android:layout_below="@+id/ic_empty_bookshelf"
-            android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif-medium"
             android:paddingTop="@dimen/medium_margin"
-            android:text="@string/empty_view_title_text"
-            android:textAppearance="?android:textAppearanceMedium"/>
+            android:text="@string/empty_view_empty_inventory_text"
+            android:textAppearance="?android:textAppearanceMedium" />
 
         <TextView
             android:id="@+id/empty_subtitle_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/EmptyTextViewStyle"
+            android:fontFamily="sans-serif-medium"
             android:layout_below="@+id/empty_title_text"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
             android:paddingTop="@dimen/close_to_medium_margin"
-            android:text="@string/empty_view_subtitle_text"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@color/colorLightPurple"/>
+            android:text="@string/empty_view_prompt_text"
+            android:textAppearance="?android:textAppearanceSmall" />
     </RelativeLayout>
-
 
     <!--Plus icon created by Smashicons at www.flaticon.com -->
     <android.support.design.widget.FloatingActionButton
