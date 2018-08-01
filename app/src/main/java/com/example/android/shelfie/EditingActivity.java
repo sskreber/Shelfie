@@ -503,7 +503,9 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     }
 
     public void decreaseProductQuantity(View view) {
-        quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
+        if (!TextUtils.isEmpty(mQuantityEditText.getText().toString())) {
+            quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
+        }
         if (quantityInt == 0) {
             Toast.makeText(this, R.string.button_quantity_change_failure_msg, Toast.LENGTH_LONG).show();
             return;
@@ -517,7 +519,9 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     }
 
     public void increaseProductQuantity(View view) {
-        quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
+        if (!TextUtils.isEmpty(mQuantityEditText.getText().toString())) {
+            quantityInt = Integer.valueOf(mQuantityEditText.getText().toString());
+        }
         if (mAvailability == BookEntry.AVAILABILITY_NOT_AVAILABLE) {
             mAvailabilitySpinner.setSelection(BookEntry.AVAILABILITY_IN_STORAGE);
         }
