@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -27,8 +28,11 @@ import com.example.android.shelfie.data.BookContract.BookEntry;
 
 public class EditingActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final String LOG_TAG = EditingActivity.class.getSimpleName();
+
     private static final int EXISTING_BOOK_LOADER = 0;
     int quantityInt = 0;
+    int yearInt;
     Uri mCurrentBookUri;
     private EditText mSupplierNameEditText;
     private EditText mSupplierPhoneNumberEditText;
@@ -46,6 +50,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
     private int mAvailability = 0;
     private String mSupplierPhoneNumber = "";
     private boolean mBookHasChanged = false;
+
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -209,8 +214,12 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
         int supplierPhoneNumberInt = setValidIntegerDataFromEditTextString(supplierPhoneNumberString);
         quantityInt = setValidIntegerDataFromEditTextString(quantityString);
-        int yearInt = setValidIntegerDataFromEditTextString(yearString);
+        yearInt = setValidYearIntDataFromEditTextString(yearString);
         int priceInt = setValidIntegerDataFromEditTextString(priceString);
+        if (yearInt == 0) {
+            yearInt = setValidYearIntDataFromEditTextString(priceString);
+            return;
+        }
 
         ContentValues values = new ContentValues();
         values.put(BookEntry.COLUMN_BOOK_SUPPLIER_NAME, supplierNameString);
@@ -258,6 +267,33 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         }
         return attributeInteger;
     }
+
+    private int setValidYearIntDataFromEditTextString(String yearString) {
+        yearInt = 0;
+        if (!TextUtils.isEmpty(yearString)) {
+            yearInt = Integer.parseInt(yearString);
+        }
+        if (!isValidYear(yearInt, yearString)){
+            return 0;
+        }
+        return yearInt;
+    }
+
+    private boolean isValidYear(int yearInt, String yearString) {
+        boolean isValidYear = false;
+        if (yearInt <= 1600) {
+            Toast.makeText(this, getString(R.string.toast_warning_invalid_year),
+                    Toast.LENGTH_LONG).show();
+            Log.e(LOG_TAG, "yearInt is: " + yearInt);
+            return isValidYear;
+        } else {
+            yearInt = Integer.parseInt(yearString);
+            isValidYear = true;
+            Log.e(LOG_TAG, "yearInt is: " + yearInt);
+            return isValidYear;
+        }
+    }
+
 
     private void showUnsavedChangesDialog(
             DialogInterface.OnClickListener discardButtonClickListener) {

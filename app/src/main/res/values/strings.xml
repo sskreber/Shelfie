@@ -73,5 +73,6 @@
     <string name="button_sale_item_unavailable_msg">Item already out of stock</string>
 
     <string name="toast_warning_null_value_in_entry">Please fill in all the fields</string>
+    <string name="toast_warning_invalid_year">Please enter a valid publication year</string>
 
 </resources>

@@ -70,7 +70,7 @@ public class BookProvider extends ContentProvider {
 
 
     private Uri insertBook(Uri uri, ContentValues values) {
-        validateInputData(values);
+//        validateInputData(values);
 
         SQLiteDatabase database = mBookDbHelper.getWritableDatabase();
         long id = database.insert(BookContract.BookEntry.TABLE_NAME, null, values);
