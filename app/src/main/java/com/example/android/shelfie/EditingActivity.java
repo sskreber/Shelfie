@@ -217,7 +217,7 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
         yearInt = setValidYearIntDataFromEditTextString(yearString);
         int priceInt = setValidIntegerDataFromEditTextString(priceString);
         if (yearInt == 0) {
-            yearInt = setValidYearIntDataFromEditTextString(priceString);
+            yearInt = setValidYearIntDataFromEditTextString(yearString);
             return;
         }
 
