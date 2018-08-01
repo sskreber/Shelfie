@@ -281,15 +281,13 @@ public class EditingActivity extends AppCompatActivity implements LoaderManager.
 
     private boolean isValidYear(int yearInt, String yearString) {
         boolean isValidYear = false;
-        if (yearInt <= 1600) {
+        if (yearInt <= 1600 || yearInt >= 2031) {
             Toast.makeText(this, getString(R.string.toast_warning_invalid_year),
                     Toast.LENGTH_LONG).show();
-            Log.e(LOG_TAG, "yearInt is: " + yearInt);
             return isValidYear;
         } else {
             yearInt = Integer.parseInt(yearString);
             isValidYear = true;
-            Log.e(LOG_TAG, "yearInt is: " + yearInt);
             return isValidYear;
         }
     }

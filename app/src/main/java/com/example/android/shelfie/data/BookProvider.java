@@ -70,8 +70,6 @@ public class BookProvider extends ContentProvider {
 
 
     private Uri insertBook(Uri uri, ContentValues values) {
-//        validateInputData(values);
-
         SQLiteDatabase database = mBookDbHelper.getWritableDatabase();
         long id = database.insert(BookContract.BookEntry.TABLE_NAME, null, values);
 
@@ -82,81 +80,6 @@ public class BookProvider extends ContentProvider {
         getContext().getContentResolver().notifyChange(uri, null);
 
         return ContentUris.withAppendedId(uri, id);
-    }
-
-    private void validateInputData(ContentValues values) {
-        validateInputAuthor(values);
-        validateInputTitle(values);
-        validateInputLanguage(values);
-        validateInputQuantity(values);
-        validateInputPublicationYear(values);
-        validateInputPrice(values);
-        validateInputProductName(values);
-        validateInputState(values);
-        validateInputAvailability(values);
-    }
-
-    private void validateInputAuthor(ContentValues values) {
-        String author = values.getAsString(BookContract.BookEntry.COLUMN_BOOK_AUTHOR);
-        if (author == null) {
-            throw new IllegalArgumentException("Book requires an author");
-        }
-    }
-
-    private void validateInputTitle(ContentValues values) {
-        String title = values.getAsString(BookContract.BookEntry.COLUMN_BOOK_TITLE);
-        if (title == null) {
-            throw new IllegalArgumentException("Book requires a title");
-        }
-    }
-
-    private void validateInputLanguage(ContentValues values) {
-        String language = values.getAsString(BookContract.BookEntry.COLUMN_BOOK_LANGUAGE);
-        if (language == null) {
-            throw new IllegalArgumentException("Book requires a language");
-        }
-    }
-
-    private void validateInputQuantity(ContentValues values) {
-        Integer quantity = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_QUANTITY);
-        if (quantity == null || quantity < 0) {
-            throw new IllegalArgumentException("Book requires valid quantity");
-        }
-    }
-
-    private void validateInputPublicationYear(ContentValues values) {
-        Integer publicationYear = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_PUBLICATION_YEAR);
-        if (publicationYear != null && publicationYear != 0 && publicationYear <= 1600) {
-            throw new IllegalArgumentException("Book requires valid publication year");
-        }
-    }
-
-    private void validateInputPrice(ContentValues values) {
-        Integer price = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_PRICE);
-        if (price != null && price < 0) {
-            throw new IllegalArgumentException("Book requires valid price");
-        }
-    }
-
-    private void validateInputProductName(ContentValues values) {
-        String productName = values.getAsString(BookContract.BookEntry.COLUMN_BOOK_PRODUCT_NAME);
-        if (productName != null && !BookContract.BookEntry.isValidProductName(productName)) {
-            throw new IllegalArgumentException("Book requires valid product name");
-        }
-    }
-
-    private void validateInputState(ContentValues values) {
-        Integer state = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_STATE);
-        if (state != null && !BookContract.BookEntry.isValidState(state)) {
-            throw new IllegalArgumentException("Book requires valid state");
-        }
-    }
-
-    private void validateInputAvailability(ContentValues values) {
-        Integer availability = values.getAsInteger(BookContract.BookEntry.COLUMN_BOOK_AVAILABILITY);
-        if (availability == null || !BookContract.BookEntry.isValidAvailability(availability)) {
-            throw new IllegalArgumentException("Book requires valid availability");
-        }
     }
 
     @Override
@@ -177,34 +100,6 @@ public class BookProvider extends ContentProvider {
     }
 
     private int updateBook(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_AUTHOR)) {
-            validateInputAuthor(values);
-        }
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_TITLE)) {
-            validateInputTitle(values);
-        }
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_LANGUAGE)) {
-            validateInputLanguage(values);
-        }
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_QUANTITY)) {
-            validateInputQuantity(values);
-        }
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_PUBLICATION_YEAR)) {
-            validateInputPublicationYear(values);
-        }
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_PRICE)) {
-            validateInputPrice(values);
-        }
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_PRODUCT_NAME)) {
-            validateInputProductName(values);
-        }
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_STATE)) {
-            validateInputState(values);
-        }
-        if (values.containsKey(BookContract.BookEntry.COLUMN_BOOK_AVAILABILITY)) {
-            validateInputAvailability(values);
-        }
 
         if (values.size() == 0) {
             return 0;
